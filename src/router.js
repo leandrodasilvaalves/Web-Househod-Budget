@@ -9,7 +9,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/transactions/create', (req, res) => {
-    res.render(`${pages_dirname}/transaction-form`, { root: view_dirname });
+    res.render(`${pages_dirname}/transaction-form`, {
+        root: view_dirname,
+        apiUrl: process.env.HOUSEHOLDBUDGET_URL
+    });
 });
 
 module.exports = router;
