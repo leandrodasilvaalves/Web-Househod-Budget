@@ -4,10 +4,10 @@ const router = require('./router');
 
 const app = express();
 require('dotenv').config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
-app.use(express.static('public'));
-app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+app.use('/node_modules', express.static(path.join(__dirname, '..', 'node_modules')));
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', router);
 app.listen(port, () => {
