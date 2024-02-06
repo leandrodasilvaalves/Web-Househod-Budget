@@ -1,13 +1,8 @@
 const axios = require('axios');
 const apiVersion = 'v1';
 
-
-async function login(username, password) {
-    let storageKey = `${username}-accessToken`;
+async function login({ username, password }) {
     try {
-        const accessToken = localStorage.getItem(storageKey);
-        if (accessToken) return accessToken;
-
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -17,13 +12,9 @@ async function login(username, password) {
             },
             data: { username, password }
         };
+
         const response = await axios.request(config);
-        var { isSuccess, data } = response.data;
-        if (isSuccess) {
-            const { token_type, access_token } = data;
-            localStorage.setItem(storageKey, `${token_type} ${access_token}`)
-            return access_token;
-        }
+        return response.data;
     } catch (error) {
         return error.response;
     }

@@ -1,5 +1,4 @@
-import { login } from './user.client';
-
+import { accessToken, clearAccessToken } from '../user.service';
 const axios = require('axios');
 const apiVersion = 'v1';
 
@@ -9,7 +8,6 @@ async function getCategories() {
     let hasMorePages = false;
 
     try {
-        var access_token = await login('foo', 'bar');
         do {
             let config = {
                 method: 'get',
@@ -17,7 +15,7 @@ async function getCategories() {
                 url: `${apiUrl}/api/${apiVersion}/categories?pageNumber=${pageNumber}&pageSize=50`,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': access_token,
+                    'Authorization': accessToken,
                 }
             };
 
@@ -32,6 +30,10 @@ async function getCategories() {
         return { isSuccess: true, items: categoryList };
 
     } catch (error) {
+        const { status } = error.response;
+        if (status == 401) {
+            clearAccessToken();
+        }
         return error.response;
     }
 }

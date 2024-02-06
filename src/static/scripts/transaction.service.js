@@ -10,22 +10,25 @@ const firstDueDate = document.getElementById("firstDueDate");
 const paymentType = document.getElementById("paymentType");
 const subcategoriesList = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-    const desiredRoutes = ['/transactions/create', '/transactions/edit'];
-    const currentPath = window.location.pathname;
+export default function () {
+    document.addEventListener("DOMContentLoaded", async () => {
+        const desiredRoutes = ['/transactions/create', '/transactions/edit'];
+        const currentPath = window.location.pathname;
 
-    if (desiredRoutes.includes(currentPath)) {
-        categoriesDropdown.addEventListener("change", loadSubcategories);
+        if (desiredRoutes.includes(currentPath)) {
+            categoriesDropdown.addEventListener("change", loadSubcategories);
 
-        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio =>
-            radio.addEventListener("change", e => {
-                creditCardForm.style.display = creditCardRadio.checked ? showCreditCardForm() : hideCreditCardForm();
-                paymentType.value = e.target.value;
-            }));
+            document.querySelectorAll('input[name="paymentMethod"]').forEach(radio =>
+                radio.addEventListener("change", e => {
+                    creditCardForm.style.display = creditCardRadio.checked ? showCreditCardForm() : hideCreditCardForm();
+                    paymentType.value = e.target.value;
+                }));
 
-        loadCategories();
-    }
-});
+            await loadCategories();
+        }
+    });
+}
+
 
 function showCreditCardForm() { creditCardForm.classList.remove("visually-hidden"); }
 function hideCreditCardForm() {
@@ -35,10 +38,10 @@ function hideCreditCardForm() {
     firstDueDate.value = "";
 }
 
-async function loadCategories() {    
-    const categories = await getCategories();
+async function loadCategories() {
     categoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
 
+    const categories = await getCategories();
     if (categories.isSuccess) {
         for (let category of categories.items) {
             let option = document.createElement("option");
