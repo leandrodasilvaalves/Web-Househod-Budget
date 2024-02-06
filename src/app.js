@@ -8,6 +8,7 @@ const port = process.env.PORT;
 
 app.use('/node_modules', express.static(path.join(__dirname, '..', 'node_modules')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

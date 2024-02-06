@@ -1,3 +1,5 @@
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 const categoriesDropdown = document.getElementById("category");
 const subcategoriesDropdown = document.getElementById("subcategory");
 const categoriesList = JSON.parse(`{}`)
