@@ -1,10 +1,12 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    entry: './src/public/scripts/transaction.js',
+    mode: 'development',
+    entry: './src/static/scripts/main.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'src/public'),
     },
     module: {
         rules: [
@@ -20,8 +22,24 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                ],
+            },
+            {
+                test: /\.css$/,
+                include: path.resolve(__dirname, 'static/css/'),
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                ],
             },
         ],
     },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'styles.css',
+        }),
+    ],
 };
