@@ -1,4 +1,5 @@
 import { getCategories } from './clients/category.client';
+import { create } from './clients/transaction.client';
 
 const categoriesDropdown = document.getElementById("category");
 const subcategoriesDropdown = document.getElementById("subcategory");
@@ -8,6 +9,7 @@ const creditCardName = document.getElementById("creditCardName");
 const installmentsNumber = document.getElementById("installmentsNumber");
 const firstDueDate = document.getElementById("firstDueDate");
 const paymentType = document.getElementById("paymentType");
+const transactionForm = document.getElementById("transactionForm");
 const subcategoriesList = [];
 
 export default function () {
@@ -23,6 +25,11 @@ export default function () {
                     creditCardForm.style.display = creditCardRadio.checked ? showCreditCardForm() : hideCreditCardForm();
                     paymentType.value = e.target.value;
                 }));
+
+            transactionForm.addEventListener('submit', async event => {
+                event.preventDefault();
+                saveTransaction(event);
+            });
 
             await loadCategories();
         }
@@ -66,5 +73,35 @@ function loadSubcategories() {
             option.text = subcategory.name;
             subcategoriesDropdown.appendChild(option);
         });
+    }
+}
+
+async function saveTransaction({ target }) {
+    let transaction = {
+        description: target[0].value,
+        category: {
+            id: target[1].value,
+            subcategory: {
+                id: target[2].value,
+            }
+        },
+        payment: {
+            total: target[12].value,
+            type: target[3].value,
+            creditCard: target[3].value != "CREDIT_CARD" ? null : {
+                name: target[9].value,
+                installmentNumber: target[10].value,
+                firstDueDate: target[11].value
+            }
+        },
+        transactionDate: target[13].value,
+        tags: target[14].value?.split(";"),
+    };
+    var { isSuccess, data, errors } = await create(transaction);
+    if (isSuccess) {
+        console.log('transação criada com sucesso', data);
+    }
+    else {
+        console.log('Ocorreram erros ao tentar registrar uma transação', errors);
     }
 }
