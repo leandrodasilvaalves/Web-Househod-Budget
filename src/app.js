@@ -7,9 +7,10 @@ require('dotenv').config();
 const port = process.env.PORT;
 
 app.use('/node_modules', express.static(path.join(__dirname, '..', 'node_modules')));
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 app.use('/', router);
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+app.listen(port, () => console.log(`Server is running: http://localhost:${port}`));

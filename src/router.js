@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const view_dirname = path.join(__dirname, 'views');
+const pages_dirname = 'pages';
 
 router.get('/', (req, res) => {
-    res.sendFile('home.html', { root: view_dirname });
+    res.render(`${pages_dirname}/home`, { root: view_dirname });
 });
 
 router.get('/transactions', (req, res) => {
-    res.sendFile('transaction.html', { root: view_dirname });
+    res.render(`${pages_dirname}/transaction`, { root: view_dirname });
 });
 
 module.exports = router;
