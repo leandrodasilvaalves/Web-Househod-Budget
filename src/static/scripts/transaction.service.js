@@ -17,7 +17,7 @@ export default function () {
         const desiredRoutes = ['/transactions/create', '/transactions/edit'];
         const currentPath = window.location.pathname;
 
-        if (desiredRoutes.includes(currentPath)) {
+        if (desiredRoutes.includes(currentPath)) {  
             categoriesDropdown.addEventListener("change", loadSubcategories);
 
             document.querySelectorAll('input[name="paymentMethod"]').forEach(radio =>

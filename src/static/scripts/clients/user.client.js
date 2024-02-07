@@ -1,23 +1,6 @@
-const axios = require('axios');
-const apiVersion = 'v1';
+import httpclient from './http.client';
 
-async function login({ username, password }) {
-    try {
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: `${apiUrl}/api/${apiVersion}/identity/login`,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            data: { username, password }
-        };
-
-        const response = await axios.request(config);
-        return response.data;
-    } catch (error) {
-        return error.response;
-    }
-}
+const login = async (user) =>
+    httpclient.post('identity/login', user, true);
 
 export { login };

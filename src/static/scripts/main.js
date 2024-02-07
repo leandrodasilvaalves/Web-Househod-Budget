@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import '../css/style.css'
 // clients
+import './clients/http.client.js';
 import './clients/category.client.js';
 import './clients/user.client.js';
 import './clients/transaction.client.js';

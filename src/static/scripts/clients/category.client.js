@@ -1,41 +1,20 @@
-import { accessToken, clearAccessToken } from '../user.service';
-const axios = require('axios');
-const apiVersion = 'v1';
+import httpclient from './http.client';
 
 async function getCategories() {
     const categoryList = [];
     let pageNumber = 1;
     let hasMorePages = false;
 
-    try {
-        do {
-            let config = {
-                method: 'get',
-                maxBodyLength: Infinity,
-                url: `${apiUrl}/api/${apiVersion}/categories?pageNumber=${pageNumber}&pageSize=50`,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': accessToken,
-                }
-            };
+    do {
+        const { data, error } = await httpclient.get('categories', `pageNumber=${pageNumber}&pageSize=50`);
+        if (error) return error;
 
-            const response = await axios.request(config);
-            var { isSuccess, data } = response.data;
-            if (isSuccess) {
-                categoryList.push(...data.items);
-                hasMorePages = data.hasMorePages;
-                pageNumber += 1;
-            }
-        } while (hasMorePages);
-        return { isSuccess: true, items: categoryList };
+        categoryList.push(...data?.items);
+        hasMorePages = data.hasMorePages;
+        pageNumber += 1;
 
-    } catch (error) {
-        const { status } = error.response;
-        if (status == 401) {
-            clearAccessToken();
-        }
-        return error.response;
-    }
+    } while (hasMorePages);
+    return { isSuccess: true, items: categoryList };
 }
 
 export { getCategories };
