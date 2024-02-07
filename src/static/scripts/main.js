@@ -1,6 +1,7 @@
 // libs
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'sweetalert2/dist/sweetalert2.all.min.js'
 
 import '../css/style.css'
 // clients

@@ -1,5 +1,6 @@
 import { getCategories } from './clients/category.client';
 import { create } from './clients/transaction.client';
+import { successAlert, errorAlert } from './alerts.service';
 
 const categoriesDropdown = document.getElementById("category");
 const subcategoriesDropdown = document.getElementById("subcategory");
@@ -17,7 +18,7 @@ export default function () {
         const desiredRoutes = ['/transactions/create', '/transactions/edit'];
         const currentPath = window.location.pathname;
 
-        if (desiredRoutes.includes(currentPath)) {  
+        if (desiredRoutes.includes(currentPath)) {
             categoriesDropdown.addEventListener("change", loadSubcategories);
 
             document.querySelectorAll('input[name="paymentMethod"]').forEach(radio =>
@@ -99,9 +100,11 @@ async function saveTransaction({ target }) {
     };
     var { isSuccess, data, errors } = await create(transaction);
     if (isSuccess) {
-        console.log('transação criada com sucesso', data);
+        console.log('data', data);
+        successAlert('transação criada com sucesso')
     }
     else {
-        console.log('Ocorreram erros ao tentar registrar uma transação', errors);
+        console.log('errors', errors);
+        errorAlert('Ocorreram erros ao tentar registrar uma transação');
     }
 }

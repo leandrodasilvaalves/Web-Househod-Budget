@@ -14,6 +14,8 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    cpus: 0.25
+    mem_limit: 120M
     
   api:    
     container_name: api.household.buget
@@ -35,6 +37,8 @@ services:
       timeout: 15s
       retries: 3
       start_period: 2s
+    cpus: 0.25
+    mem_limit: 120M
 
   mongo:
     image: mongo
@@ -78,3 +82,5 @@ services:
       interval: 10s
       retries: 3
       start_period: 5s
+    cpus: 0.5
+    mem_limit: 256M
