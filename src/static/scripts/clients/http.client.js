@@ -1,6 +1,5 @@
 import { accessToken, clearAccessToken } from '../user.service';
 const axios = require('axios');
-const apiVersion = 'v1';
 
 const headers = (isAnonymousRoute) => {
     let _headers = { 'Content-Type': 'application/json', }
@@ -18,37 +17,34 @@ const handlerError = (error) => {
     return error.response;
 };
 
-const httpclient = {
-    get: async (path, query, isAnonymousRoute) => {
-        try {
-            let config = {
-                method: 'get',
-                maxBodyLength: Infinity,
-                url: `${apiUrl}/api/${apiVersion}/${path}?${query}`,
-                headers: headers(isAnonymousRoute),
-            };
-            const response = await axios.request(config);
-            return response.data;
-        } catch (error) {
-            return handlerError(error);
-        }
-    },
-
-    post: async (path, body, isAnonymousRoute) => {
-        try {
-            let config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: `${apiUrl}/api/${apiVersion}/${path}`,
-                headers: headers(isAnonymousRoute),
-                data: body
-            };
-
-            const response = await axios.request(config);
-            return response.data;
-        } catch (error) {
-            return handlerError(error);
-        }
+const createConfig = (method, path, body, isAnonymousRoute) => {
+    let config = {
+        method,
+        maxBodyLength: Infinity,
+        url: `${apiUrl}/api/v1/${path}`,
+        headers: headers(isAnonymousRoute),
+    };
+    if (body) {
+        return { ...config, data: body };
     }
+    return config;
+};
+
+const request = async (method, path, body, isAnonymousRoute) => {
+    try {
+        let config = createConfig(method, path, body, isAnonymousRoute);
+        const response = await axios.request(config);
+        return response.data;
+    } catch (error) {
+        return handlerError(error);
+    }
+}
+
+const httpclient = {
+    get: async (path, query, isAnonymousRoute) =>
+        await request('get', `${path}?${query}`, undefined, isAnonymousRoute),
+
+    post: async (path, body, isAnonymousRoute) =>
+        await request('post', path, body, isAnonymousRoute),
 }
 export default httpclient;
