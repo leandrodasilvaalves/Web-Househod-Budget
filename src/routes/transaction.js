@@ -10,15 +10,19 @@ const options = {
 };
 
 router.get('/', (req, res) => {
-    res.render(`${pages_dirname}/home`, options);
+    res.render(`${pages_dirname}/transactions-list`, options);
 });
 
-router.get('/transactions/create', (req, res) => {
+router.get('/create', (req, res) => {
     res.render(`${pages_dirname}/transaction-form`, options);
 });
 
-router.get('/account/login', (req, res) => {
-    res.render(`${pages_dirname}/login`, options);
+router.get('/edit:id', (req, res) => {
+    res.render(`${pages_dirname}/transaction-edit`, options);
+});
+
+router.get('/remove:id', (req, res) => {
+    res.render(`${pages_dirname}/transaction-remove`, options);
 });
 
 module.exports = router;
