@@ -1,28 +1,22 @@
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-const pages_dirname = 'pages';
-
-const options = {
-    root: path.join(__dirname, 'views'),
-    apiUrl: process.env.HOUSEHOLDBUDGET_URL
-};
+const helper = require('./routesHelper');
 
 router.get('/', (req, res) => {
-    res.render(`${pages_dirname}/transactions-list`, options);
+    res.render(`${helper.getPagesDirectory()}/transactions-list`, helper.getOptions());
 });
 
 router.get('/create', (req, res) => {
-    res.render(`${pages_dirname}/transaction-form`, options);
+    res.render(`${helper.getPagesDirectory()}/transaction-form`, helper.getOptions());
 });
 
 router.get('/edit:id', (req, res) => {
-    res.render(`${pages_dirname}/transaction-edit`, options);
+    res.render(`${helper.getPagesDirectory()}/transaction-edit`, helper.getOptions());
 });
 
 router.get('/remove:id', (req, res) => {
-    res.render(`${pages_dirname}/transaction-remove`, options);
+    res.render(`${helper.getPagesDirectory()}/transaction-remove`, helper.getOptions());
 });
 
 module.exports = router;
