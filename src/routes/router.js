@@ -3,16 +3,11 @@ const express = require('express');
 const transactions = require('./transaction');
 const account = require('./account');
 const router = express.Router();
-const path = require('path');
+const helper = require('./helpers/routesHelper');
 
-const pages_dirname = 'pages';
-const options = {
-    root: path.join(__dirname, 'views'),
-    apiUrl: process.env.HOUSEHOLDBUDGET_URL
-};
 
 router.get('/', (req, res) => {
-    res.render(`${pages_dirname}/home`, options);
+    res.render(helper.getView('home'), helper.getOptions());
 });
 
 router.use('/transactions', transactions);
