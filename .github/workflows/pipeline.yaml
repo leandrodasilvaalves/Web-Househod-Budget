@@ -1,0 +1,55 @@
+name: Continous Integration
+
+on:
+  push:
+    branches:
+      - "release/**"
+      - "feature/**"
+      - main
+  pull_request:
+    types:
+      - opened
+      - closed
+      - synchronize
+    branches:
+      - main
+
+jobs:
+  versioning:
+    uses: leandrodasilvaalves/actions/.github/workflows/git-version.yaml@v1.1.0
+
+  build:
+    uses: leandrodasilvaalves/actions/.github/workflows/build-nodejs.yaml@v1.1.0
+    needs: Versioning
+    with:
+      node-version: "20.11.0"
+
+  docker:
+    uses: leandrodasilvaalves/actions/.github/workflows/docker-build-publish.yaml@v1.1.0
+    needs: [versioning, build]
+    with:
+      username: leandroalves86
+      context: .
+      dockerfile: ./Dockerfile
+      version: ${{needs.versioning.outputs.version}}
+      solution-name: web.household.budget
+      prefix-allowed-branch: release
+    secrets:
+      usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  # deploy:
+  #   uses: leandrodasilvaalves/actions/.github/workflows/azure-deploy.yaml@v1.1.0
+  #   needs: [docker]
+  #   with:
+  #     appname: householdbudget
+  #     docker-image: ${{ needs.docker.outputs.docker-image }}
+  #   secrets:
+  #     azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
+  #
+
+  tag:
+    uses: leandrodasilvaalves/actions/.github/workflows/create-tag.yaml@v1.1.0
+    # needs: [versioning, deploy]
+    needs: [versioning]
+    with:
+      version: ${{needs.versioning.outputs.version}}
