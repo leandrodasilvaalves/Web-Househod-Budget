@@ -2,109 +2,115 @@ import { getCategories } from './clients/category.client';
 import { create } from './clients/transaction.client';
 import { successAlert, errorAlert } from './alerts.service';
 
-const categoriesDropdown = document.getElementById("category");
-const subcategoriesDropdown = document.getElementById("subcategory");
-const creditCardRadio = document.getElementById("creditCard");
-const creditCardForm = document.getElementById("creditCardForm");
-const creditCardName = document.getElementById("creditCardName");
-const installmentsNumber = document.getElementById("installmentsNumber");
-const firstDueDate = document.getElementById("firstDueDate");
-const paymentType = document.getElementById("paymentType");
-const transactionForm = document.getElementById("transactionForm");
-const subcategoriesList = [];
-
 export default function () {
     document.addEventListener("DOMContentLoaded", async () => {
-        const desiredRoutes = ['/transactions/create', '/transactions/edit'];
-        const currentPath = window.location.pathname;
-
-        if (desiredRoutes.includes(currentPath)) {
-            categoriesDropdown.addEventListener("change", loadSubcategories);
-
-            document.querySelectorAll('input[name="paymentMethod"]').forEach(radio =>
-                radio.addEventListener("change", e => {
-                    creditCardForm.style.display = creditCardRadio.checked ? showCreditCardForm() : hideCreditCardForm();
-                    paymentType.value = e.target.value;
-                }));
-
-            transactionForm.addEventListener('submit', async event => {
+        if (page.isDesiredRoute()) {
+            page.form.addEventListener('submit', async event => {
                 event.preventDefault();
-                saveTransaction(event);
+                var { isSuccess, data, errors } = await create(page.buildTransaction(event));
+                if (isSuccess) {
+                    console.log('data', data);
+                    successAlert('transação criada com sucesso')
+                }
+                else {
+                    console.log('errors', errors);
+                    errorAlert('Ocorreram erros ao tentar registrar uma transação');
+                }
             });
-
-            await loadCategories();
+            page.configurePaymentInputs();
+            await page.loadCategories();            
         }
     });
 }
 
+const page = {
+    form: document.getElementById("transactionForm"),
+    categoriesDropdown: document.getElementById("category"),
+    subcategoriesDropdown: document.getElementById("subcategory"),
+    creditCardRadio: document.getElementById("creditCard"),
+    creditCardForm: document.getElementById("creditCardForm"),
+    creditCardName: document.getElementById("creditCardName"),
+    installmentsNumber: document.getElementById("installmentsNumber"),
+    firstDueDate: document.getElementById("firstDueDate"),
+    paymentType: document.getElementById("paymentType"),
+    subcategoriesList: [],
 
-function showCreditCardForm() { creditCardForm.classList.remove("visually-hidden"); }
-function hideCreditCardForm() {
-    creditCardForm.classList.add("visually-hidden");
-    creditCardName.value = "";
-    installmentsNumber.value = "";
-    firstDueDate.value = "";
-}
+    isDesiredRoute: () => {
+        const desiredRoutes = ['/transactions/create', '/transactions/edit'];
+        return desiredRoutes.includes(window.location.pathname);
+    },
+    showCreditCardForm: () => { page.creditCardForm.classList.remove("visually-hidden"); },
+    hideCreditCardForm: () => {
+        page.creditCardForm.classList.add("visually-hidden");
+        page.creditCardName.value = "";
+        page.installmentsNumber.value = "";
+        page.firstDueDate.value = "";
+    },
+    loadCategories: async () => {
+        page.categoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
 
-async function loadCategories() {
-    categoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
-
-    const categories = await getCategories();
-    if (categories.isSuccess) {
-        for (let category of categories.items) {
-            let option = document.createElement("option");
-            option.value = category.id;
-            option.text = category.name;
-            categoriesDropdown.appendChild(option);
-            for (let subcategory of category.subcategories) {
-                subcategoriesList.push({ ...subcategory, categoryId: category.id });
+        const categories = await getCategories();
+        if (categories.isSuccess) {
+            for (let category of categories.items) {
+                let option = document.createElement("option");
+                option.value = category.id;
+                option.text = category.name;
+                page.categoriesDropdown.appendChild(option);
+                for (let subcategory of category.subcategories) {
+                    page.subcategoriesList.push({ ...subcategory, categoryId: category.id });
+                }
             }
         }
-    }
-}
+        page.categoriesDropdown.addEventListener("change", page.loadSubcategories);
+    },
+    loadSubcategories: () => {
+        page.subcategoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
+        let matchingSubcategories = page.subcategoriesList.filter(c => c.categoryId == page.categoriesDropdown.value);
 
-function loadSubcategories() {
-    subcategoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
-    let matchingSubcategories = subcategoriesList.filter(c => c.categoryId == categoriesDropdown.value);
-
-    if (matchingSubcategories) {
-        matchingSubcategories.forEach((subcategory) => {
-            let option = document.createElement("option");
-            option.value = subcategory.id;
-            option.text = subcategory.name;
-            subcategoriesDropdown.appendChild(option);
-        });
-    }
-}
-
-async function saveTransaction({ target }) {
-    let transaction = {
-        description: target[0].value,
-        category: {
-            id: target[1].value,
-            subcategory: {
-                id: target[2].value,
-            }
-        },
-        payment: {
-            total: target[12].value,
-            type: target[3].value,
-            creditCard: target[3].value != "CREDIT_CARD" ? null : {
-                name: target[9].value,
-                installmentNumber: target[10].value,
-                firstDueDate: target[11].value
-            }
-        },
-        transactionDate: target[13].value,
-        tags: target[14].value?.split(";"),
-    };
-    var { isSuccess, data, errors } = await create(transaction);
-    if (isSuccess) {
-        console.log('data', data);
-        successAlert('transação criada com sucesso')
-    }
-    else {
-        console.log('errors', errors);
-        errorAlert('Ocorreram erros ao tentar registrar uma transação');
+        if (matchingSubcategories) {
+            matchingSubcategories.forEach((subcategory) => {
+                let option = document.createElement("option");
+                option.value = subcategory.id;
+                option.text = subcategory.name;
+                page.subcategoriesDropdown.appendChild(option);
+            });
+        }
+    },
+    buildTransaction: ({ target }) => {
+        return {
+            description: target[0].value,
+            category: {
+                id: target[1].value,
+                subcategory: {
+                    id: target[2].value,
+                }
+            },
+            payment: {
+                total: target[12].value,
+                type: target[3].value,
+                creditCard: page.creditCardRadio.checked == false ? null : {
+                    name: target[9].value,
+                    installmentNumber: target[10].value,
+                    firstDueDate: target[11].value
+                }
+            },
+            transactionDate: target[13].value,
+            tags: target[14].value?.split(";"),
+        };
+    },
+    configurePaymentInputs: () => {
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener("change", e => {
+                if (page.creditCardRadio.checked) {
+                    page.showCreditCardForm();
+                }
+                else {
+                    page.hideCreditCardForm();
+                }
+                console.log('target', e.target.value)
+                page.paymentType.value = e.target.value;
+            });
+            page.creditCardRadio.click();
+        });       
     }
 }
