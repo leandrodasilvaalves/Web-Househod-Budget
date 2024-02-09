@@ -3,4 +3,7 @@ import httpclient from './http.client';
 const login = async (user) =>
     httpclient.post('identity/login', user, true);
 
-export { login };
+const register = async (user)=>
+    httpclient.post('identity/register', user, true);
+
+export { login, register };

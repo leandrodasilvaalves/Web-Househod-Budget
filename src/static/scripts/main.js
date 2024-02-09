@@ -11,9 +11,11 @@ import './clients/user.client.js';
 import './clients/transaction.client.js';
 
 // services
-import user from './user.service.js';
+import loginUser from './user.login.service.js';
+import regiserUser from './user.register.service.js';
 import transaction from './transaction.service.js';
 
 // actions
-user('/transactions/create');
+loginUser('/transactions/create');
+regiserUser();
 transaction();
