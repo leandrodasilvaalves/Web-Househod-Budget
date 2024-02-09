@@ -37,19 +37,19 @@ jobs:
     secrets:
       usertoken: ${{ secrets.DOCKERHUB_TOKEN }}
 
-  # deploy:
-  #   uses: leandrodasilvaalves/actions/.github/workflows/azure-deploy.yaml@v1.1.0
-  #   needs: [docker]
-  #   with:
-  #     appname: householdbudget
-  #     docker-image: ${{ needs.docker.outputs.docker-image }}
-  #   secrets:
-  #     azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
-  #
+  deploy:
+    uses: leandrodasilvaalves/actions/.github/workflows/azure-deploy.yaml@v1.1.0
+    needs: [docker]
+    with:
+      appname: web-householdbudget
+      docker-image: ${{ needs.docker.outputs.docker-image }}
+      prefix-allowed-branch: release
+    secrets:
+      azure-deploy: ${{ secrets.AZURE_DEPLOY  }}
+  
 
   tag:
     uses: leandrodasilvaalves/actions/.github/workflows/create-tag.yaml@v1.1.0
-    # needs: [versioning, deploy]
-    needs: [versioning, docker]
+    needs: [versioning, deploy]
     with:
       version: ${{needs.versioning.outputs.version}}
