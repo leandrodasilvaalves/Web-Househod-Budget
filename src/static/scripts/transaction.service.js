@@ -107,7 +107,6 @@ const page = {
                 else {
                     page.hideCreditCardForm();
                 }
-                console.log('target', e.target.value)
                 page.paymentType.value = e.target.value;
             });
             page.creditCardRadio.click();

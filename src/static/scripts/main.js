@@ -11,11 +11,16 @@ import './clients/user.client.js';
 import './clients/transaction.client.js';
 
 // services
-import loginUser from './user.login.service.js';
+import loginUser, { isTokenExpired, clearAccessToken } from './user.login.service.js';
 import regiserUser from './user.register.service.js';
 import transaction from './transaction.service.js';
 
 // actions
-loginUser('/transactions/create');
-regiserUser();
-transaction();
+if (isTokenExpired()) {
+    clearAccessToken();
+}
+else {
+    loginUser('/transactions/create');
+    regiserUser();
+    transaction();
+}

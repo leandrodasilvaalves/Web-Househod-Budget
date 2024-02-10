@@ -3,10 +3,10 @@ import storage from './storage.service';
 const storageKey = `accessToken`;
 
 export default function (destinationRoute) {
-    if (window.location.pathname == '/account/login') {
+    if (page.isLogin()) {
         page.form.addEventListener('submit', async event => {
             event.preventDefault();
-            if (storage.getItem(storageKey)) {
+            if (isTokenExpired() == false) {
                 window.location.href = destinationRoute;
             }
 
@@ -17,6 +17,9 @@ export default function (destinationRoute) {
                 window.location.href = destinationRoute;
             }
         });
+    }
+    if (page.isLogout()) {
+        clearAccessToken();
     }
 }
 
@@ -29,14 +32,26 @@ const page = {
             username: page.username.value,
             password: page.password.value,
         }
-    }
+    },
+    isLogin: () => window.location.pathname == '/account/login',
+    isLogout: () => window.location.pathname == '/account/logout',
 }
 
 const accessToken = storage.getItem(storageKey);
 
 const clearAccessToken = () => {
     storage.removetItem(storageKey);
-    window.location.href = '/account/login';
+    if (page.isLogin() == false) {
+        window.location.href = '/account/login';
+    }
 }
 
-export { clearAccessToken, accessToken };
+const isTokenExpired = () => {
+    const token = storage.getItem(storageKey)?.split(' ')[1];
+    if (token) {
+        const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+        return (Math.floor((new Date()).getTime() / 1000)) >= expiry;
+    }
+}
+
+export { clearAccessToken, accessToken, isTokenExpired };

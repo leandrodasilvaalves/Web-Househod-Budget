@@ -7,6 +7,10 @@ router.get('/login', (req, res) => {
     res.render(helper.getView('user-login'), helper.getOptions());
 });
 
+router.get('/logout', (req, res) => {
+    res.render(helper.getView('user-login'), helper.getOptions());
+});
+
 router.get('/register', (req, res) => {
     res.render(helper.getView('user-register'), helper.getOptions());
 });
