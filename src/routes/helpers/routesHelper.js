@@ -3,7 +3,8 @@ const path = require('path');
 
 const options = {
     root: path.join(__dirname, 'views'),
-    apiUrl: process.env.HOUSEHOLDBUDGET_URL
+    apiUrl: process.env.HOUSEHOLDBUDGET_URL,
+    envName: process.env.ENV_NAME,
 };
 
 const helper = {

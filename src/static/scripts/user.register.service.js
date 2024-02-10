@@ -2,8 +2,7 @@ import { register } from './clients/user.client';
 import { successAlert, errorAlert, warningAlert } from './alerts.service';
 
 export default function () {
-    if (window.location.pathname == '/account/register') {
-
+    if (page.isRegisterUser()) {
         page.form.addEventListener('submit', async event => {
             event.preventDefault();
             if (page.differentPasswords()) {
@@ -45,4 +44,7 @@ const page = {
     differentPasswords: () =>
         page.password.value != page.confirmPassword.value &&
         warningAlert('As senhas devem ser iguais!'),
+    isRegisterUser: () => window.location.pathname == '/account/register',
 }
+
+export { page };

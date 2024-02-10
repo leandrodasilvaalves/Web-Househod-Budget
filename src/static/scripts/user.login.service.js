@@ -54,4 +54,4 @@ const isTokenExpired = () => {
     }
 }
 
-export { clearAccessToken, accessToken, isTokenExpired };
+export { clearAccessToken, accessToken, isTokenExpired, page };
