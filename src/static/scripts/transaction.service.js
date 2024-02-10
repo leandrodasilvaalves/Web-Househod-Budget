@@ -25,6 +25,7 @@ export default function () {
 
 const page = {
     form: document.getElementById("transactionForm"),
+    description: document.getElementById("description"),
     categoriesDropdown: document.getElementById("category"),
     subcategoriesDropdown: document.getElementById("subcategory"),
     creditCardRadio: document.getElementById("creditCard"),
@@ -33,6 +34,9 @@ const page = {
     installmentsNumber: document.getElementById("installmentsNumber"),
     firstDueDate: document.getElementById("firstDueDate"),
     paymentType: document.getElementById("paymentType"),
+    transactionAmount: document.getElementById("transactionAmount"),
+    transactionDate: document.getElementById("transactionDate"),
+    tags: document.getElementById("tags"),
     subcategoriesList: [],
 
     isDesiredRoute: () => {
@@ -113,3 +117,5 @@ const page = {
         });       
     }
 }
+
+export { page };
