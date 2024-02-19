@@ -19,7 +19,7 @@ services:
     
   api:    
     container_name: api.household.buget
-    image: leandroalves86/household.buget:1.0.5
+    image: leandroalves86/household.budget:1.0.7-beta.2
     ports:
       - 5215:80
     environment:
