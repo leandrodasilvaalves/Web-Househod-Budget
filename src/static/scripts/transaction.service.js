@@ -18,10 +18,11 @@ export default function () {
                 }
             });
             page.configurePaymentInputs();
-            await page.loadCategories();            
+            await page.loadCategories();
         }
     });
 }
+
 
 const page = {
     form: document.getElementById("transactionForm"),
@@ -114,7 +115,7 @@ const page = {
                 page.paymentType.value = e.target.value;
             });
             page.creditCardRadio.click();
-        });       
+        });
     }
 }
 
