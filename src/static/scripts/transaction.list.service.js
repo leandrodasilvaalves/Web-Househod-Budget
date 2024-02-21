@@ -1,4 +1,5 @@
 import { getAllTransactions } from './clients/transaction.client';
+import pagination from './pagination.service';
 
 export default function () {
     if (page.isDesiredRoute()) {
@@ -38,32 +39,9 @@ const page = {
                     </td>
                 </tr>`}).join('');
             tbody.innerHTML = result;
-            page.generatePagination(data);
+            pagination(data);
         }
     },
-
-    generatePagination: ({ totalResult, currentPage, pageSize, totalPages, hasMorePages }) => {
-        const previousPage = currentPage > 1 ? (currentPage - 1) : currentPage;
-        const nextPage = currentPage < totalPages ? (currentPage + 1) : totalPages;
-        const disablePreviousPage = currentPage == 1 ? "disabled" : "";
-        const disableNextpage = currentPage == totalPages ? "disabled" : "";
-
-        console.log({ totalResult, currentPage, pageSize, totalPages, hasMorePages });
-
-        const html = `<ul class="pagination justify-content-end">
-          <li class="page-item ${disablePreviousPage}">
-            <a class="page-link" href="/transactions?year=2024&month=02&page=${previousPage}&size=${pageSize}">Previous</a>
-          </li>
-          <li class="page-item"><a class="page-link" href="/transactions?year=2024&month=02&page=1&size=${pageSize}">1</a></li>
-          <li class="page-item"><a class="page-link" href="/transactions?year=2024&month=02&page=2&size=${pageSize}">2</a></li>
-          <li class="page-item"><a class="page-link" href="/transactions?year=2024&month=02&page=3&size=${pageSize}">3</a></li>
-          <li class="page-item ${disableNextpage}">
-            <a class="page-link" href="/transactions?year=2024&month=02&page=${nextPage}&size=${pageSize}">Next</a>
-          </li>
-        </ul>`
-        page.pagination.innerHTML = html;
-    },
-
     getQueryString: () => {
         const queryString = window.location.search;
         const parameters = new URLSearchParams(queryString);
