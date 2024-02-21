@@ -13,10 +13,10 @@ const page = {
         return desiredRoutes.includes(window.location.pathname);
     },
     loadTransactions: async () => {
-        const { isSuccess, data, errors } = await getAllTransactions('2024', '02', 1);
+        const { isSuccess, data, errors } = await getAllTransactions(page.getQueryString());
         if (isSuccess) {
             const tbody = page.table.getElementsByTagName("tbody")[0];
-            const result = data.items.map(item =>{
+            const result = data.items.map(item => {
                 return `<tr>
                     <td>${new Date(item.transactionDate).getUTCDate()}</td>
                     <td>${item.description}</td>
@@ -30,14 +30,22 @@ const page = {
                     </td>                                        
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">                           
-                            <button type="button" class="btn btn-outline-info"><i
-                                    class="bi bi-pencil-square"></i></button>
-                            <button type="button" class="btn btn-outline-danger"><i
-                                    class="bi bi-trash"></i></button>
+                            <button type="button" class="btn btn-outline-info"><i class="bi bi-pencil-square"></i></button>
+                            <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
                         </div>
                     </td>
                 </tr>`}).join('');
             tbody.innerHTML = result;
         }
+    },
+    getQueryString: () => {
+        const queryString = window.location.search;
+        const parameters = new URLSearchParams(queryString);
+
+        const year = parameters.get('year');
+        const month = parameters.get('month');
+        const page = parameters.get('page');
+        const size = parameters.get('size');
+        return { year, month, page, size };
     }
 }
