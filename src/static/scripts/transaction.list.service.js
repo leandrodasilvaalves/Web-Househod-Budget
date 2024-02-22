@@ -39,7 +39,7 @@ const page = {
                     </td>
                 </tr>`}).join('');
             tbody.innerHTML = result;
-            pagination(data);
+            pagination({ ...data, pageSize: 15 });
         }
     },
     getQueryString: () => {

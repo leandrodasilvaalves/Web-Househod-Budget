@@ -3,7 +3,7 @@ export default ({ currentPage, pageSize, totalPages }, length) => {
         const previousPage = page.previousPage(currentPage);
         const nextPage = page.nextPage(currentPage, totalPages);
         const link = page.getLink();
-        const pages = page.getPages(currentPage, length || 5);
+        const pages = page.getPages(currentPage, totalPages, length || 5);
 
         const template =
             `<ul class="pagination justify-content-end">
@@ -31,5 +31,7 @@ const page = {
         const regex = new RegExp(/&page=\d+&size=\d+/g);
         return `${window.location.pathname}${window.location.search.replace(regex, '')}`;
     },
-    getPages: (currentPage, length) => Array.from({ length }, (_, indice) => indice + currentPage),
+    getPages: (currentPage, totalPages, length) => currentPage + length >= totalPages ?
+        Array.from({ length }, (_, index) => totalPages - index).reverse().filter(x => x > 0) :
+        Array.from({ length }, (_, index) => index + currentPage),
 }
