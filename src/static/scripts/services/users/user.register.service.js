@@ -1,5 +1,5 @@
-import { register } from './clients/user.client';
-import { successAlert, errorAlert, warningAlert } from './utils/alerts.utils';
+import { register } from '../../clients/user.client';
+import { successAlert, errorAlert, warningAlert } from '../../utils/alerts.utils';
 
 export default function () {
     if (page.isRegisterUser()) {

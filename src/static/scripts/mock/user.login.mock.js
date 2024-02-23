@@ -1,8 +1,8 @@
-import { page } from '../user.login.service';
+import { loginPage as loginPage } from '../services/users';
 
 export default function () {
-    if (page.isLogin()) {
-        page.username.value = 'lele';
-        page.password.value = '123@Mudar';
+    if (loginPage.isLogin()) {
+        loginPage.username.value = 'lele';
+        loginPage.password.value = '123@Mudar';
     }
 }

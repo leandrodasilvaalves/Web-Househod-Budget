@@ -1,11 +1,11 @@
-import { page } from '../user.register.service';
+import { registerPage } from '../services/users';
 
 export default function () {
-    if (page.isRegisterUser()) {
-        page.fullName.value = 'Leandro Alves';
-        page.email.value = 'leandro@email.com';
-        page.username.value = 'lele';
-        page.password.value = '123@Mudar';
-        page.confirmPassword.value = '123@Mudar';
+    if (registerPage.isRegisterUser()) {
+        registerPage.fullName.value = 'Leandro Alves';
+        registerPage.email.value = 'leandro@email.com';
+        registerPage.username.value = 'lele';
+        registerPage.password.value = '123@Mudar';
+        registerPage.confirmPassword.value = '123@Mudar';
     }
 }

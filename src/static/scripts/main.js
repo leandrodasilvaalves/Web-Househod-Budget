@@ -6,9 +6,8 @@ import 'bootstrap-icons/font/bootstrap-icons.min.css';
 import '../css/style.css'
 
 // services
-import loginUser, { isTokenExpired, clearAccessToken } from './user.login.service.js';
+import users, { isAuthenticated } from './services/users';
 import transactions from './services/transactions';
-import regiserUser from './user.register.service.js';
 import footer from './partials/footer.partial.js';
 
 //mock: development
@@ -16,12 +15,8 @@ import mockForms from './mock';
 
 // actions
 footer();
-if (isTokenExpired()) {
-    clearAccessToken();
-}
-else {
-    loginUser('/transactions/create');
-    regiserUser();
+if (isAuthenticated()) {
+    users();
     transactions();
     mockForms();
 }
