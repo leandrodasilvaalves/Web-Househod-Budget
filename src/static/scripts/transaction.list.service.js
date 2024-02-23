@@ -19,8 +19,8 @@ const page = {
         const { isSuccess, data, errors } = await getAllTransactions(page.getQueryString());
         if (isSuccess) {
             const tbody = page.table.getElementsByTagName("tbody")[0];
-            const result = data.items.map(item => {
-                return `<tr>
+            const result = data.items.map(item =>
+                `<tr>
                     <td>${new Date(item.transactionDate).getUTCDate()}</td>
                     <td>${item.description}</td>
                     <td>
@@ -32,12 +32,12 @@ const page = {
                         <small>${item.payment.total.toFixed(2)}</small>
                     </td>                                        
                     <td>
-                        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">                           
-                            <button type="button" class="btn btn-outline-info"><i class="bi bi-pencil-square"></i></button>
-                            <button type="button" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">   
+                            <a href="/transactions/edit/${item.id}" class="btn btn-outline-info" tabindex="-1" role="button"><i class="bi bi-pencil-square"></i></a>
+                            <a href="#" class="btn btn-outline-danger" tabindex="-1" role="button"><i class="bi bi-trash"></i></a>
                         </div>
                     </td>
-                </tr>`}).join('');
+                </tr>`).join('');
             tbody.innerHTML = result;
             pagination({ ...data, pageSize: 15 });
         }

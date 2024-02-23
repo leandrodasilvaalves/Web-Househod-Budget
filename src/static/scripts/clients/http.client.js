@@ -41,9 +41,10 @@ const request = async (method, path, body, isAnonymousRoute) => {
 }
 
 const httpclient = {
-    get: async (path, query, isAnonymousRoute) =>
-        await request('get', `${path}?${query}`, undefined, isAnonymousRoute),
-
+    get: async (path, query, isAnonymousRoute) => {
+        const completePath = query ? `${path}?${query}` : path;
+        return await request('get', completePath, undefined, isAnonymousRoute);
+    },
     post: async (path, body, isAnonymousRoute) =>
         await request('post', path, body, isAnonymousRoute),
 }

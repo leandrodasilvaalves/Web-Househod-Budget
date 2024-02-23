@@ -1,30 +1,6 @@
-import { getCategories } from './clients/category.client';
-import { create } from './clients/transaction.client';
-import { successAlert, errorAlert } from './alerts.service';
+import { getCategories } from '../clients/category.client'
 
-export default function () {
-    document.addEventListener("DOMContentLoaded", async () => {
-        if (page.isDesiredRoute()) {
-            page.form.addEventListener('submit', async event => {
-                event.preventDefault();
-                var { isSuccess, data, errors } = await create(page.buildTransaction(event));
-                if (isSuccess) {
-                    console.log('data', data);
-                    successAlert('transação criada com sucesso')
-                }
-                else {
-                    console.log('errors', errors);
-                    errorAlert('Ocorreram erros ao tentar registrar uma transação');
-                }
-            });
-            page.configurePaymentInputs();
-            await page.loadCategories();
-        }
-    });
-}
-
-
-const page = {
+export const page = {
     form: document.getElementById("transactionForm"),
     description: document.getElementById("description"),
     categoriesDropdown: document.getElementById("category"),
@@ -41,9 +17,10 @@ const page = {
     subcategoriesList: [],
 
     isDesiredRoute: () => {
-        const desiredRoutes = ['/transactions/create', '/transactions/edit'];
+        const desiredRoutes = ['/transactions/create', '/transactions/edit/:id'];
         return desiredRoutes.includes(window.location.pathname);
     },
+    getIdFromRoute: () => window.location.split('/')?.pop(),
     showCreditCardForm: () => { page.creditCardForm.classList.remove("visually-hidden"); },
     hideCreditCardForm: () => {
         page.creditCardForm.classList.add("visually-hidden");
@@ -53,7 +30,6 @@ const page = {
     },
     loadCategories: async () => {
         page.categoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
-
         const categories = await getCategories();
         if (categories.isSuccess) {
             for (let category of categories.items) {
@@ -118,5 +94,3 @@ const page = {
         });
     }
 }
-
-export { page };

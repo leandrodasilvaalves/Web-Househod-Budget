@@ -11,11 +11,11 @@ router.get('/create', (req, res) => {
     res.render(helper.getView('transaction-form'), helper.getOptions());
 });
 
-router.get('/edit:id', (req, res) => {
-    res.render(helper.getView('transaction-edit'), helper.getOptions());
+router.get('/edit/:id', (req, res) => {
+    res.render(helper.getView('transaction-form'), helper.getOptions());
 });
 
-router.get('/remove:id', (req, res) => {
+router.get('/remove/:id', (req, res) => {
     res.render(helper.getView('transaction-remove'), helper.getOptions());
 });
 
