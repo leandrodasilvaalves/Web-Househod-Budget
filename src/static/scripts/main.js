@@ -7,9 +7,8 @@ import '../css/style.css'
 
 // services
 import loginUser, { isTokenExpired, clearAccessToken } from './user.login.service.js';
+import transactions from './services/transactions';
 import regiserUser from './user.register.service.js';
-import transactionCreate from './transaction.create.service.js';
-import transactionList from './transaction.list.service.js';
 import footer from './partials/footer.partial.js';
 
 //mock: development
@@ -23,7 +22,6 @@ if (isTokenExpired()) {
 else {
     loginUser('/transactions/create');
     regiserUser();
-    transactionCreate();
-    transactionList();
+    transactions();
     mockForms();
 }

@@ -1,4 +1,4 @@
-import { getCategories } from '../clients/category.client'
+import { getCategories } from '../../clients/category.client';
 
 export const page = {
     form: document.getElementById("transactionForm"),

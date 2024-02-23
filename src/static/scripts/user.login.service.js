@@ -1,5 +1,5 @@
 import { login } from './clients/user.client';
-import storage from './storage.service';
+import storage from './utils/storage.utils'
 const storageKey = `accessToken`;
 
 export default function (destinationRoute) {

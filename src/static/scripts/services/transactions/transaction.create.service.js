@@ -1,6 +1,6 @@
-import { createTransaction } from './clients/transaction.client';
-import { page } from './pages/transaction.form.page';
-import { successAlert, errorAlert } from './alerts.service';
+import { createTransaction } from '../../clients/transaction.client';
+import { page } from './transaction.form.page';
+import { successAlert, errorAlert } from '../../utils/alerts.utils';
 
 export default function () {
     document.addEventListener("DOMContentLoaded", async () => {

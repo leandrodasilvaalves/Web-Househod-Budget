@@ -1,4 +1,4 @@
-import { page } from "../pages/transaction.form.page";
+import { page } from "../services/transactions/transaction.form.page";
 
 export default function () {
     if (page.isDesiredRoute()) {
