@@ -10,7 +10,7 @@ import loginUser, { isTokenExpired, clearAccessToken } from './user.login.servic
 import regiserUser from './user.register.service.js';
 import transactionForm from './transaction.form.service.js';
 import transactionList from './transaction.list.service.js';
-import footer from './footer.service.js';
+import footer from './partials/footer.partial.js';
 
 //mock: development
 import mockForms from './mock';

@@ -1,5 +1,5 @@
 import { getAllTransactions } from './clients/transaction.client';
-import pagination from './pagination.service';
+import pagination from './partials/pagination.partial';
 
 export default function () {
     if (page.isDesiredRoute()) {

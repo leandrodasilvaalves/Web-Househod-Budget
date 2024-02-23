@@ -1,4 +1,4 @@
-import storage from "./storage.service";
+import storage from "../storage.service";
 
 export default function () {
     const theme = storage.getItem('theme');
