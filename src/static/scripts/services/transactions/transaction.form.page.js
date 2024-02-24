@@ -1,4 +1,5 @@
 import { getCategories } from '../../clients/category.client';
+import { parseDate } from '../../utils/date.utils';
 
 export const page = {
     form: document.getElementById("transactionForm"),
@@ -107,11 +108,6 @@ export const page = {
         page.transactionDate.value = parseDate(data.transactionDate);
         page.tags.value = data.tags.join(';');
     }
-}
-
-const parseDate = value => {
-    const date = new Date(value);
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate()}`;
 }
 
 const loadPayment = payment => {

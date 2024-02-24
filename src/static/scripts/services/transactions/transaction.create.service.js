@@ -10,7 +10,7 @@ export default function () {
                 var { isSuccess, data, errors } = await createTransaction(page.buildTransaction());
                 if (isSuccess) {
                     console.log('data', data);
-                    successAlert('transação criada com sucesso')
+                    successAlert('transação criada com sucesso', () => history.back())
                 }
                 else {
                     console.log('errors', errors);

@@ -10,10 +10,10 @@ const executeAlert = (type, title, text, callback) => {
 const successAlert = (title, text, callback) =>
     executeAlert("success", title, text, callback);
 
-const errorAlert = (title, text) =>
+const errorAlert = (title, text, callback) =>
     executeAlert("error", title, text, callback);
 
-const warningAlert = (title, text) =>
+const warningAlert = (title, text, callback) =>
     executeAlert("warning", title, text, callback);
 
 
