@@ -47,5 +47,8 @@ const httpclient = {
     },
     post: async (path, body, isAnonymousRoute) =>
         await request('post', path, body, isAnonymousRoute),
+
+    patch: async (path, body, isAnonymousRoute) =>
+        await request('patch', `${path}/${body.id}`, body, isAnonymousRoute),
 }
 export default httpclient;

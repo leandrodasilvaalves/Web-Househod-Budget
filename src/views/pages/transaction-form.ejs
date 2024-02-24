@@ -7,147 +7,149 @@
 
 <body>
     <%- include('../partials/navbar') %>
-    <div class="container">
-        <main role="main" class="pb-3 mb-5">
-            <div>
-                <div class="row g-5">
-                    <div class="col-md-7 col-lg-8">
-                        <h4 class="mb-3">Registrar Transação</h4>
-                        <form id="transactionForm" class="needs-validation" novalidate>
-                            <div class="row g-3">
-
-                                <div class="col-12">
-                                    <label for="description" class="form-label">Descrição</label>
-                                    <div class="input-group has-validation">
-                                        <input type="text" class="form-control" id="description"
-                                            placeholder="Despesa/Receita na ocasião..." required>
-                                        <div class="invalid-feedback">
-                                            A descrição é obrigatória.
+        <div class="container">
+            <main role="main" class="pb-3 mb-5">
+                <div>
+                    <div class="row g-5">
+                        <div class="col-md-7 col-lg-8">
+                            <h4 class="mb-3">Registrar Transação</h4>
+                            <form id="transactionForm" class="needs-validation" novalidate>
+                                <div class="row g-3">
+                                    <input type="hidden" id="transactionId" value="" />
+                                    <div class="col-12">
+                                        <label for="description" class="form-label">Descrição</label>
+                                        <div class="input-group has-validation">
+                                            <input type="text" class="form-control" id="description"
+                                                placeholder="Despesa/Receita na ocasião..." required>
+                                            <div class="invalid-feedback">
+                                                A descrição é obrigatória.
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="category" class="form-label">Categoria</label>
-                                    <select class="form-select" id="category" required>
-                                        <option value="" disabled selected>Selecione ...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Por favor, selecione uma categoria
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="subcategory" class="form-label">Subcategoria</label>
-                                    <select class="form-select" id="subcategory" required>
-                                        <option value="" disabled selected>Selecione ...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Por favor, selecione uma subcategoria
-                                    </div>
-                                </div>
-
-                                <hr class="my-4">
-
-                                <h4 class="mb-3">Pagamento</h4>
-
-                                <div class="my-1">
-                                    <input type="hidden" id="paymentType" value="" />
-                                    <div class="form-check">
-                                        <input id="creditCard" name="paymentMethod" type="radio"
-                                            class="form-check-input" value="CREDIT_CARD" required>
-                                        <label class="form-check-label" for="creditCard">Cartão de crédito</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input id="pix" name="paymentMethod" type="radio" class="form-check-input"
-                                            value="PIX" required>
-                                        <label class="form-check-label" for="pix">Pix</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input id="money" name="paymentMethod" type="radio" class="form-check-input"
-                                            value="MONEY" required>
-                                        <label class="form-check-label" for="money">Dinheiro</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input"
-                                            value="DEBIT" required>
-                                        <label class="form-check-label" for="debit">Débito</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input id="deposit" name="paymentMethod" type="radio" class="form-check-input"
-                                            value="DEPOSIT" required>
-                                        <label class="form-check-label" for="deposit">Depósito</label>
-                                    </div>
-                                </div>
-
-                                <div id="creditCardForm" class="row gy-3">
-                                    <div class="col-md-4">
-                                        <label for="creditCardName" class="form-label">Cartão de crédito</label>
-                                        <select class="form-select" id="creditCardName" required>
+                                    <div class="col-md-6">
+                                        <label for="category" class="form-label">Categoria</label>
+                                        <select class="form-select" id="category" required>
                                             <option value="" disabled selected>Selecione ...</option>
-                                            <option value="C6 Bank">C6 Bank</option>
-                                            <option value="Nubank">Nubank</option>
-                                            <option value="Credicard">Credicard</option>
-                                            <option value="Picpay">Picpay</option>
                                         </select>
                                         <div class="invalid-feedback">
-                                            Por favor, selecione um cartão de crédito
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label for="installmentsNumber" class="form-label">Numero de
-                                            parcelas</label>
-                                        <input type="number" class="form-control" min="1" id="installmentsNumber"
-                                            placeholder="" required>
-                                        <div class="invalid-feedback">
-                                            Informe o número de parcelas
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label for="firstDueDate" class="form-label">Primeiro vencimento</label>
-                                        <input type="date" class="form-control" id="firstDueDate" placeholder=""
-                                            required>
-                                        <div class="invalid-feedback">
-                                            Informe a data do primeiro vencimento
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row gy-3">
-                                    <div class="col-md-6">
-                                        <label for="transactionAmount" class="form-label">Total</label>
-                                        <input type="number" class="form-control" id="transactionAmount"
-                                            placeholder="10.00" required>
-                                        <div class="invalid-feedback">
-                                            Informe o total da transação
+                                            Por favor, selecione uma categoria
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="transactionDate" class="form-label">Data da Transação</label>
-                                        <input type="date" class="form-control" id="transactionDate" placeholder=""
-                                            required>
+                                        <label for="subcategory" class="form-label">Subcategoria</label>
+                                        <select class="form-select" id="subcategory" required>
+                                            <option value="" disabled selected>Selecione ...</option>
+                                        </select>
                                         <div class="invalid-feedback">
-                                            Informe a data da transação
+                                            Por favor, selecione uma subcategoria
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
-                                        <label for="tags" class="form-label">Tags</label>
-                                        <input type="text" class="form-control" id="tags" placeholder="tag1;tag2;tag3">
+                                    <hr class="my-4">
+
+                                    <h4 class="mb-3">Pagamento</h4>
+
+                                    <div class="my-1">
+                                        <input type="hidden" id="paymentType" value="" />
+                                        <div class="form-check">
+                                            <input id="creditCard" name="paymentMethod" type="radio"
+                                                class="form-check-input" value="CREDIT_CARD" required>
+                                            <label class="form-check-label" for="creditCard">Cartão de crédito</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input id="pix" name="paymentMethod" type="radio" class="form-check-input"
+                                                value="PIX" required>
+                                            <label class="form-check-label" for="pix">Pix</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input id="money" name="paymentMethod" type="radio" class="form-check-input"
+                                                value="MONEY" required>
+                                            <label class="form-check-label" for="money">Dinheiro</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input id="debit" name="paymentMethod" type="radio" class="form-check-input"
+                                                value="DEBIT" required>
+                                            <label class="form-check-label" for="debit">Débito</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input id="deposit" name="paymentMethod" type="radio"
+                                                class="form-check-input" value="DEPOSIT" required>
+                                            <label class="form-check-label" for="deposit">Depósito</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <button class="w-100 btn btn-primary btn-lg" type="submit">Salvar</button>
-                        </form>
+
+                                    <div id="creditCardForm" class="row gy-3">
+                                        <div class="col-md-4">
+                                            <label for="creditCardName" class="form-label">Cartão de crédito</label>
+                                            <select class="form-select" id="creditCardName" required>
+                                                <option value="" disabled selected>Selecione ...</option>
+                                                <option value="C6 Bank">C6 Bank</option>
+                                                <option value="Nubank">Nubank</option>
+                                                <option value="Credicard">Credicard</option>
+                                                <option value="Picpay">Picpay</option>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Por favor, selecione um cartão de crédito
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="installmentsNumber" class="form-label">Numero de
+                                                parcelas</label>
+                                            <input type="number" class="form-control" min="1" id="installmentsNumber"
+                                                placeholder="" required>
+                                            <div class="invalid-feedback">
+                                                Informe o número de parcelas
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="firstDueDate" class="form-label">Primeiro vencimento</label>
+                                            <input type="date" class="form-control" id="firstDueDate" placeholder=""
+                                                required>
+                                            <div class="invalid-feedback">
+                                                Informe a data do primeiro vencimento
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row gy-3">
+                                        <div class="col-md-6">
+                                            <label for="transactionAmount" class="form-label">Total</label>
+                                            <input type="number" class="form-control" id="transactionAmount"
+                                                placeholder="10.00" required>
+                                            <div class="invalid-feedback">
+                                                Informe o total da transação
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="transactionDate" class="form-label">Data da Transação</label>
+                                            <input type="date" class="form-control" id="transactionDate" placeholder=""
+                                                required>
+                                            <div class="invalid-feedback">
+                                                Informe a data da transação
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label for="tags" class="form-label">Tags</label>
+                                            <input type="text" class="form-control" id="tags"
+                                                placeholder="tag1;tag2;tag3">
+                                        </div>
+                                    </div>
+                                    <button class="w-100 btn btn-primary btn-lg" type="submit">Salvar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </main>
-    </div>
+            </main>
+        </div>
 
-    <%- include('../partials/footer') %>
-    <%- include('../partials/scripts') %>
+        <%- include('../partials/footer') %>
+            <%- include('../partials/scripts') %>
 </body>
+
 </html>

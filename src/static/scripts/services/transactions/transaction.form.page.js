@@ -2,9 +2,10 @@ import { getCategories } from '../../clients/category.client';
 
 export const page = {
     form: document.getElementById("transactionForm"),
+    transactionId: document.getElementById("transactionId"),
     description: document.getElementById("description"),
-    categoriesDropdown: document.getElementById("category"),
-    subcategoriesDropdown: document.getElementById("subcategory"),
+    category: document.getElementById("category"),
+    subcategory: document.getElementById("subcategory"),
     creditCardRadio: document.getElementById("creditCard"),
     creditCardForm: document.getElementById("creditCardForm"),
     creditCardName: document.getElementById("creditCardName"),
@@ -14,13 +15,14 @@ export const page = {
     transactionAmount: document.getElementById("transactionAmount"),
     transactionDate: document.getElementById("transactionDate"),
     tags: document.getElementById("tags"),
+    paymentTypeRabioButtons: document.querySelectorAll('input[name="paymentMethod"]'),
+    total: document.getElementById("transactionAmount"),
+    type: document.getElementById("paymentType"),
     subcategoriesList: [],
-
     isDesiredRoute: () => {
         const desiredRoutes = ['/transactions/create', '/transactions/edit/:id'];
         return desiredRoutes.includes(window.location.pathname);
     },
-    getIdFromRoute: () => window.location.split('/')?.pop(),
     showCreditCardForm: () => { page.creditCardForm.classList.remove("visually-hidden"); },
     hideCreditCardForm: () => {
         page.creditCardForm.classList.add("visually-hidden");
@@ -29,58 +31,60 @@ export const page = {
         page.firstDueDate.value = "";
     },
     loadCategories: async () => {
-        page.categoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
+        page.category.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
         const categories = await getCategories();
         if (categories.isSuccess) {
             for (let category of categories.items) {
                 let option = document.createElement("option");
                 option.value = category.id;
                 option.text = category.name;
-                page.categoriesDropdown.appendChild(option);
+                page.category.appendChild(option);
                 for (let subcategory of category.subcategories) {
                     page.subcategoriesList.push({ ...subcategory, categoryId: category.id });
                 }
             }
         }
-        page.categoriesDropdown.addEventListener("change", page.loadSubcategories);
+        page.category.addEventListener("change", page.loadSubcategories);
     },
     loadSubcategories: () => {
-        page.subcategoriesDropdown.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
-        let matchingSubcategories = page.subcategoriesList.filter(c => c.categoryId == page.categoriesDropdown.value);
+        page.subcategory.innerHTML = '<option value="" disabled selected>Selecione ...</option>';
+        let matchingSubcategories = page.subcategoriesList.filter(c => c.categoryId == page.category.value);
 
         if (matchingSubcategories) {
             matchingSubcategories.forEach((subcategory) => {
                 let option = document.createElement("option");
                 option.value = subcategory.id;
                 option.text = subcategory.name;
-                page.subcategoriesDropdown.appendChild(option);
+                page.subcategory.appendChild(option);
             });
         }
     },
-    buildTransaction: ({ target }) => {
-        return {
-            description: target[0].value,
+    buildTransaction: () => {
+        const transaction = {
+            description: page.description.value,
             category: {
-                id: target[1].value,
+                id: page.category.value,
                 subcategory: {
-                    id: target[2].value,
+                    id: page.subcategory.value,
                 }
             },
             payment: {
-                total: target[12].value,
-                type: target[3].value,
+                total: page.total.value,
+                type: page.type.value,
                 creditCard: page.creditCardRadio.checked == false ? null : {
-                    name: target[9].value,
-                    installmentNumber: target[10].value,
-                    firstDueDate: target[11].value
+                    name: page.creditCardName.value,
+                    installmentNumber: page.installmentsNumber.value,
+                    firstDueDate: parseDate(page.firstDueDate.value)
                 }
             },
-            transactionDate: target[13].value,
-            tags: target[14].value?.split(";"),
+            transactionDate: parseDate(page.transactionDate.value),
+            tags: page.tags.value?.split(";"),
         };
+
+        return page.transactionId.value ? { ...transaction, id: page.transactionId.value } : transaction;
     },
     configurePaymentInputs: () => {
-        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+        page.paymentTypeRabioButtons.forEach(radio => {
             radio.addEventListener("change", e => {
                 if (page.creditCardRadio.checked) {
                     page.showCreditCardForm();
@@ -92,5 +96,36 @@ export const page = {
             });
             page.creditCardRadio.click();
         });
+    },
+    loadForm: ({ data }) => {
+        page.transactionId.value = data.id;
+        page.description.value = data.description;
+        page.category.value = data.category.id;
+        page.loadSubcategories();
+        page.subcategory.value = data.category.subcategory.id;
+        loadPayment(data.payment);
+        page.transactionDate.value = parseDate(data.transactionDate);
+        page.tags.value = data.tags.join(';');
     }
 }
+
+const parseDate = value => {
+    const date = new Date(value);
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate()}`;
+}
+
+const loadPayment = payment => {
+    page.paymentType.value = payment.type;
+    page.total.value = payment.total;
+    page.paymentTypeRabioButtons.forEach(radio => {
+        if (radio.value == payment.type) {
+            radio.checked = true;
+        }
+    });
+    if (payment.type == 'CREDIT_CARD') {
+        const { creditCard } = payment;
+        page.creditCardName.value = creditCard.name;
+        page.installmentsNumber.value = creditCard.installment.number;
+        page.firstDueDate.value = parseDate(creditCard.installment.nextPayments[0].dueDate);
+    }
+};

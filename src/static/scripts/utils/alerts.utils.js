@@ -1,10 +1,20 @@
 import Swal from 'sweetalert2';
 
-const successAlert = (title, text) => Swal.fire({ title, text, icon: "success" });
+const executeAlert = (type, title, text, callback) => {
+    Swal.fire({ title, text, icon: type })
+        .then(() => {
+            if (callback) { callback(); }
+        });
+};
 
-const errorAlert = (title, text) => Swal.fire({ title, text, icon: "error", });
+const successAlert = (title, text, callback) =>
+    executeAlert("success", title, text, callback);
 
-const warningAlert = (title, text) => Swal.fire({ title, text, icon: "warning", });
+const errorAlert = (title, text) =>
+    executeAlert("error", title, text, callback);
+
+const warningAlert = (title, text) =>
+    executeAlert("warning", title, text, callback);
 
 
 export { successAlert, errorAlert, warningAlert };

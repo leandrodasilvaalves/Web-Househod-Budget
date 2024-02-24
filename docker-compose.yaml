@@ -1,25 +1,9 @@
 version: "3.4"
 
-services:
-  # web:
-  #   container_name: web.household.buget
-  #   image: web.household.buget
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     - HOUSEHOLDBUDGET_URL=http://localhost:5215
-  #   depends_on:
-  #     api:
-  #       condition: service_healthy
-  #   cpus: 0.25
-  #   mem_limit: 120M
-    
+services:    
   api:    
     container_name: api.household.buget
-    image: leandroalves86/household.budget:1.0.7-beta.2
+    image: leandroalves86/household.budget:1.0.7-beta.3
     ports:
       - 5215:80
     environment:

@@ -4,10 +4,10 @@ import { successAlert, errorAlert } from '../../utils/alerts.utils';
 
 export default function () {
     document.addEventListener("DOMContentLoaded", async () => {
-        if (page.isDesiredRoute()) {
+        if (isTransactionPage()) {
             page.form.addEventListener('submit', async event => {
                 event.preventDefault();
-                var { isSuccess, data, errors } = await createTransaction(page.buildTransaction(event));
+                var { isSuccess, data, errors } = await createTransaction(page.buildTransaction());
                 if (isSuccess) {
                     console.log('data', data);
                     successAlert('transação criada com sucesso')
@@ -22,3 +22,5 @@ export default function () {
         }
     });
 }
+
+const isTransactionPage = () => window.location.pathname == '/transactions/create';
