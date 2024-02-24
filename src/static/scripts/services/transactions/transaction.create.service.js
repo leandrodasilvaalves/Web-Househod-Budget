@@ -1,6 +1,6 @@
-import { createTransaction } from '../../clients/transaction.client';
+import { createTransaction } from '@clients/transaction.client';
 import { page } from './transaction.form.page';
-import { successAlert, errorAlert } from '../../utils/alerts.utils';
+import { successAlert, errorAlert } from '@utils/alerts.utils';
 
 export default function () {
     document.addEventListener("DOMContentLoaded", async () => {
@@ -10,7 +10,7 @@ export default function () {
                 var { isSuccess, data, errors } = await createTransaction(page.buildTransaction());
                 if (isSuccess) {
                     console.log('data', data);
-                    successAlert('transação criada com sucesso', () => history.back())
+                    successAlert('transação criada com sucesso', null, () => history.back())
                 }
                 else {
                     console.log('errors', errors);

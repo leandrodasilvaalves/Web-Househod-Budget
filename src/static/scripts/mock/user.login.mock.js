@@ -1,4 +1,4 @@
-import { loginPage as loginPage } from '../services/users';
+import { loginPage as loginPage } from '@services/users';
 
 export default function () {
     if (loginPage.isLogin()) {

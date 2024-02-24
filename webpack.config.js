@@ -1,5 +1,18 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const fs = require('fs');
+
+const readAliases = () => {
+    const jsconfigContent = fs.readFileSync(path.resolve(__dirname, 'jsconfig.json'), 'utf8');
+    const { paths } = JSON.parse(jsconfigContent).compilerOptions;
+
+    return Object.keys(paths).reduce((acc, key) => {
+        const aliasKey = key.replace('/*', '');
+        const aliasValue = paths[key][0].replace('/*', '');
+        acc[aliasKey] = path.resolve(__dirname, aliasValue);
+        return acc;
+    }, {});
+}
 
 module.exports = {
     mode: 'development',
@@ -43,4 +56,7 @@ module.exports = {
             filename: 'styles.css',
         }),
     ],
+    resolve: {
+        alias: readAliases(),
+    }
 };

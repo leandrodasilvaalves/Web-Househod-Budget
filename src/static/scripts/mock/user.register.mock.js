@@ -1,4 +1,4 @@
-import { registerPage } from '../services/users';
+import { registerPage } from '@services/users';
 
 export default function () {
     if (registerPage.isRegisterUser()) {

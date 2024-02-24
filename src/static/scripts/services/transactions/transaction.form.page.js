@@ -1,5 +1,5 @@
-import { getCategories } from '../../clients/category.client';
-import { parseDate } from '../../utils/date.utils';
+import { getCategories } from '@clients/category.client';
+import { parseDate } from '@utils/date.utils';
 
 export const page = {
     form: document.getElementById("transactionForm"),

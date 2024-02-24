@@ -1,5 +1,5 @@
-import { page } from "../services/transactions/transaction.form.page";
-import { addMonth } from "../utils/date.utils";
+import { page } from "@services/transactions/transaction.form.page";
+import { addMonth } from "@utils/date.utils";
 
 export default function () {
     if (page.isDesiredRoute()) {
