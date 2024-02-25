@@ -15,11 +15,27 @@
                             <h4 class="mb-3">Transações</small></h4>
                             <%- include('../partials/pagination') %>
                                 <table id="tbTransactions" class="table table-hover table-striped caption-top">
-                                    <caption>
+                                    <caption>                                        
                                         <div class="d-flex flex-row justify-content-between">
-                                            <div class="p-2"><strong><%= monthName %></strong>/<%= year %></div>
-                                            <div class="p-2"><a href="transactions/create"
-                                                    class="btn btn-outline-primary">Cadastrar</a></div>
+                                            <div class="p-2 flex-fill">
+                                                <form id="search" novalidate>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <select class="form-select" id="month"></select>
+                                                        </div>
+                                                        <div class="col">
+                                                            <select class="form-select" id="year"></select>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button class="btn btn-outline-info" type="submit">Buscar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>  
+                                            </div>
+                                            <div class="p-2">
+                                                <a href="transactions/create"
+                                                    class="btn btn-outline-primary">Cadastrar</a>
+                                            </div>
                                         </div>
                                     </caption>
                                     <thead>
@@ -34,7 +50,6 @@
                                     <tbody>
 
                                     </tbody>
-
                                 </table>
                                 <%- include('../partials/pagination') %>
                         </div>

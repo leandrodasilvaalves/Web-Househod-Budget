@@ -2,7 +2,7 @@ require('dotenv').config();
 const path = require('path');
 
 const currentDate = new Date();
-const months = [...process.env.MONTH_NAMES?.split(',')];
+const padZeroLeft = (number, zeros) => number.toString().padStart(zeros || 1, '0');
 
 const options = {
     root: path.join(__dirname, 'views'),
@@ -10,8 +10,7 @@ const options = {
     envName: process.env.ENV_NAME,
     theme: process.env.THEME,
     year: currentDate.getFullYear(),
-    month: (currentDate.getMonth() + 1).toString().padStart(2, '0'),
-    monthName: months[currentDate.getMonth()],
+    month: padZeroLeft(currentDate.getMonth() + 1, 2),
     pageSize: process.env.PAGE_SIZE || 20
 };
 

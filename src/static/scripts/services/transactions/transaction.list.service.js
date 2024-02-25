@@ -3,18 +3,31 @@ import pagination from '@partials/pagination.partial';
 import { padZeroLeft } from '@utils/number.utils';
 
 export default function () {
-    if (page.isDesiredRoute()) {
-        page.loadTransactions();
-    }
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (page.isTransactionsList()) {
+            page.loadTransactions();
+            page.configureMonths();
+            page.configureYear();
+
+            page.form.addEventListener('submit', event => {
+                event.preventDefault();
+                const { page: pg, size } = page.getQueryString();
+                const route = `/transactions?year=${year.value}&month=${month.value}&page=${pg}&size=${size}`;
+                window.location.href = route;
+            });
+        }
+    });
 }
 
 const today = new Date();
-
 export const page = {
     table: document.getElementById('tbTransactions'),
     pagination: document.getElementById('pagination'),
+    form: document.getElementById('search'),
+    year: document.getElementById('year'),
+    month: document.getElementById('month'),
     getPathRoute: () => `/transactions?year=${today.getFullYear()}&month=${padZeroLeft(today.getMonth() + 1, 2)}&page=1&size=15`,
-    isDesiredRoute: () => {
+    isTransactionsList: () => {
         const desiredRoutes = ['/transactions'];
         return desiredRoutes.includes(window.location.pathname);
     },
@@ -44,6 +57,26 @@ export const page = {
                 </tr>`).join('');
             tbody.innerHTML = result;
             pagination({ ...data, pageSize: 15 });
+        }
+    },
+    configureMonths: () => {
+        const nameOfMonths = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        const { month: current } = page.getQueryString();
+        nameOfMonths.forEach((month, index) => {
+            let option = document.createElement('option');
+            option.value = padZeroLeft(index + 1, 2);
+            option.text = month;
+            option.selected = current == padZeroLeft(index + 1, 2);
+            page.month.appendChild(option);
+        });
+    },
+    configureYear: () => {
+        for (let year = 2015; year <= 2045; year++) {
+            let option = document.createElement('option');
+            option.value = year;
+            option.text = year;
+            option.selected = year == today.getFullYear();
+            page.year.appendChild(option);
         }
     },
     getQueryString: () => {
