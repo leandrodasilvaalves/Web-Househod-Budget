@@ -14,23 +14,29 @@
                         <div class="col-md-7 col-lg-8">
                             <h4 class="mb-3">Transações</small></h4>
                             <%- include('../partials/pagination') %>
-                            <table id="tbTransactions" class="table table-hover table-striped caption-top">
-                                <caption><strong><%= monthName %></strong>/<%= year %></caption>
-                                <thead>
-                                    <tr class="table-dark">
-                                        <th>Dia</th>
-                                        <th>Descrição</th>
-                                        <th>Categoria</th>
-                                        <th>Pagamento</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                   
-                                </tbody>
+                                <table id="tbTransactions" class="table table-hover table-striped caption-top">
+                                    <caption>
+                                        <div class="d-flex flex-row justify-content-between">
+                                            <div class="p-2"><strong><%= monthName %></strong>/<%= year %></div>
+                                            <div class="p-2"><a href="transactions/create"
+                                                    class="btn btn-outline-primary">Cadastrar</a></div>
+                                        </div>
+                                    </caption>
+                                    <thead>
+                                        <tr class="table-dark">
+                                            <th>Dia</th>
+                                            <th>Descrição</th>
+                                            <th>Categoria</th>
+                                            <th>Pagamento</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                            </table>
-                            <%- include('../partials/pagination') %>
+                                    </tbody>
+
+                                </table>
+                                <%- include('../partials/pagination') %>
                         </div>
                     </div>
                 </div>
@@ -38,7 +44,7 @@
         </div>
 
         <%- include('../partials/footer') %>
-        <%- include('../partials/scripts') %>
+            <%- include('../partials/scripts') %>
 </body>
 
 </html>
