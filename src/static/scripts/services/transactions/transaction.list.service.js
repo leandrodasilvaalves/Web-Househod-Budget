@@ -41,11 +41,11 @@ export const page = {
                     <td>${new Date(item.transactionDate).getUTCDate()}</td>
                     <td>${item.description}</td>
                     <td>
-                        <span class="badge rounded-pill text-bg-secondary">${item.category.name}</span><br/>
+                        <span class="badge rounded-pill ${ item.type == "INCOMES" ? "bg-success": "bg-secondary"}">${item.category.name}</span><br/>
                         <small class="text-secondary">${item.category.subcategory.name}</small>
                     </td>
                     <td>
-                        <span class="badge bg-secondary">${item.payment.type?.toLowerCase()}</span><br/>
+                        <span class="badge ${ item.type == "INCOMES" ? "bg-success": "bg-secondary"}">${item.payment.type?.toLowerCase()}</span><br/>
                         <small>${item.payment.total.toFixed(2)}</small>
                     </td>                                        
                     <td>
@@ -71,11 +71,12 @@ export const page = {
         });
     },
     configureYear: () => {
+        const { year: current } = page.getQueryString();
         for (let year = 2015; year <= 2045; year++) {
             let option = document.createElement('option');
             option.value = year;
             option.text = year;
-            option.selected = year == today.getFullYear();
+            option.selected = year == current;
             page.year.appendChild(option);
         }
     },
