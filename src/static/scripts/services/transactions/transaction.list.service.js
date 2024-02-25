@@ -1,5 +1,6 @@
 import { getAllTransactions } from '@clients/transaction.client';
 import pagination from '@partials/pagination.partial';
+import { padZeroLeft } from '@utils/number.utils';
 
 export default function () {
     if (page.isDesiredRoute()) {
@@ -7,9 +8,12 @@ export default function () {
     }
 }
 
-const page = {
+const today = new Date();
+
+export const page = {
     table: document.getElementById('tbTransactions'),
     pagination: document.getElementById('pagination'),
+    getPathRoute: () => `/transactions?year=${today.getFullYear()}&month=${padZeroLeft(today.getMonth() + 1, 2)}&page=1&size=15`,
     isDesiredRoute: () => {
         const desiredRoutes = ['/transactions'];
         return desiredRoutes.includes(window.location.pathname);

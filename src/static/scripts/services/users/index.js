@@ -1,8 +1,9 @@
-import registerUser, {page as registerPage} from './user.register.service';
+import registerUser, { page as registerPage } from './user.register.service';
 import loginUser, { isTokenExpired, clearAccessToken, accessToken, page as loginPage } from './user.login.service.js';
+import { page as transaction } from '@services/transactions/transaction.list.service';
 
 export default () => {
-    loginUser('/transactions/create');
+    loginUser(transaction.getPathRoute());
     registerUser();
 }
 
