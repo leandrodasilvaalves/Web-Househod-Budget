@@ -16,12 +16,12 @@ export default ({ currentPage, pageSize, totalPages }, length) => {
                     <a class="page-link" href="${link}&page=${nextPage}&size=${pageSize}"><span aria-hidden="true">&raquo;</span></a>
                 </li>
             </ul>`
-        page.pagination.innerHTML = template;
+        page.pagination.forEach(pg => pg.innerHTML = template);
     };
 }
 
 const page = {
-    pagination: document.getElementById('pagination'),
+    pagination: document.getElementsByName('pagination'),
     previousPage: currentPage => currentPage > 1 ? (currentPage - 1) : currentPage,
     nextPage: (currentPage, totalPages) => currentPage < totalPages ? (currentPage + 1) : totalPages,
     disablePreviousPage: currentPage => currentPage == 1 ? "disabled" : "",
