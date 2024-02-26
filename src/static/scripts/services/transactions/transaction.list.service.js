@@ -1,4 +1,4 @@
-import { getAllTransactions } from '@clients/transaction.client';
+import { getAllTransactions, updateTransaction } from '@clients/transaction.client';
 import pagination from '@partials/pagination.partial';
 import { padZeroLeft } from '@utils/number.utils';
 
@@ -11,9 +11,7 @@ export default function () {
 
             page.form.addEventListener('submit', event => {
                 event.preventDefault();
-                const { page: pg, size } = page.getQueryString();
-                const route = `/transactions?year=${year.value}&month=${month.value}&page=${pg}&size=${size}`;
-                window.location.href = route;
+                window.location.href = page.getPathRoute();
             });
         }
     });
@@ -26,11 +24,11 @@ export const page = {
     form: document.getElementById('search'),
     year: document.getElementById('year'),
     month: document.getElementById('month'),
-    getPathRoute: () => `/transactions?year=${today.getFullYear()}&month=${padZeroLeft(today.getMonth() + 1, 2)}&page=1&size=15`,
-    isTransactionsList: () => {
-        const desiredRoutes = ['/transactions'];
-        return desiredRoutes.includes(window.location.pathname);
+    getPathRoute: () => {
+        const { page: pg, size } = page.getQueryString();
+        return `/transactions?year=${page.year?.value || today.getFullYear()}&month=${page.month?.value || padZeroLeft(today.getMonth() + 1, 2)}&page=${pg}&size=${size}`;
     },
+    isTransactionsList: () => window.location.pathname == '/transactions',
 
     loadTransactions: async () => {
         const { isSuccess, data, errors } = await getAllTransactions(page.getQueryString());
@@ -41,17 +39,17 @@ export const page = {
                     <td>${new Date(item.transactionDate).getUTCDate()}</td>
                     <td>${item.description}</td>
                     <td>
-                        <span class="badge rounded-pill ${ item.type == "INCOMES" ? "bg-success": "bg-secondary"}">${item.category.name}</span><br/>
+                        <span class="badge rounded-pill ${item.type == "INCOMES" ? "bg-success" : "bg-secondary"}">${item.category.name}</span><br/>
                         <small class="text-secondary">${item.category.subcategory.name}</small>
                     </td>
                     <td>
-                        <span class="badge ${ item.type == "INCOMES" ? "bg-success": "bg-secondary"}">${item.payment.type?.toLowerCase()}</span><br/>
+                        <span class="badge ${item.type == "INCOMES" ? "bg-success" : "bg-secondary"}">${item.payment.type?.toLowerCase()}</span><br/>
                         <small>${item.payment.total.toFixed(2)}</small>
                     </td>                                        
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">   
                             <a href="/transactions/edit/${item.id}" class="btn btn-outline-info" tabindex="-1" role="button"><i class="bi bi-pencil-square"></i></a>
-                            <a href="#" class="btn btn-outline-danger" tabindex="-1" role="button"><i class="bi bi-trash"></i></a>
+                            <a href="/transactions/remove/${item.id}" class="btn btn-outline-danger" tabindex="-1" role="button"><i class="bi bi-trash"></i></a>
                         </div>
                     </td>
                 </tr>`).join('');

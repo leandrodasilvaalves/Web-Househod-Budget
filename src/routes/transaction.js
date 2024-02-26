@@ -15,8 +15,4 @@ router.get('/edit/:id', (req, res) => {
     res.render(helper.getView('transaction-form'), helper.getOptions());
 });
 
-router.get('/remove/:id', (req, res) => {
-    res.render(helper.getView('transaction-remove'), helper.getOptions());
-});
-
 module.exports = router;
