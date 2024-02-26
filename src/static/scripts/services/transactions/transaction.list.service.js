@@ -1,6 +1,7 @@
 import { getAllTransactions, updateTransaction } from '@clients/transaction.client';
 import pagination from '@partials/pagination.partial';
 import { padZeroLeft } from '@utils/number.utils';
+import { successAlert, errorAlert, confirmAlert } from '@utils/alerts.utils';
 
 export default function () {
     document.addEventListener("DOMContentLoaded", async () => {
@@ -24,17 +25,19 @@ export const page = {
     form: document.getElementById('search'),
     year: document.getElementById('year'),
     month: document.getElementById('month'),
+    btnExcludeList: document.getElementsByName('btn-exclude'),
     getPathRoute: () => {
         const { page: pg, size } = page.getQueryString();
-        return `/transactions?year=${page.year?.value || today.getFullYear()}&month=${page.month?.value || padZeroLeft(today.getMonth() + 1, 2)}&page=${pg}&size=${size}`;
+        const year = page.year?.value || today.getFullYear();
+        const month = page.month?.value || padZeroLeft(today.getMonth() + 1, 2);
+        return `/transactions?year=${year}&month=${month}&page=${pg}&size=${size}`;
     },
     isTransactionsList: () => window.location.pathname == '/transactions',
-
     loadTransactions: async () => {
         const { isSuccess, data, errors } = await getAllTransactions(page.getQueryString());
         if (isSuccess) {
             const tbody = page.table.getElementsByTagName("tbody")[0];
-            const result = data.items.map(item =>
+            const result = data.items.map((item, index) =>
                 `<tr>
                     <td>${new Date(item.transactionDate).getUTCDate()}</td>
                     <td>${item.description}</td>
@@ -49,12 +52,15 @@ export const page = {
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">   
                             <a href="/transactions/edit/${item.id}" class="btn btn-outline-info" tabindex="-1" role="button"><i class="bi bi-pencil-square"></i></a>
-                            <a href="/transactions/remove/${item.id}" class="btn btn-outline-danger" tabindex="-1" role="button"><i class="bi bi-trash"></i></a>
+                            <button name="btn-exclude" data-id="${item.id}" data-index="${index}" class="btn btn-outline-danger" tabindex="-1" role="button"><i class="bi bi-trash"></i></button>
                         </div>
                     </td>
                 </tr>`).join('');
             tbody.innerHTML = result;
             pagination({ ...data, pageSize: 15 });
+
+            Array.from(page.btnExcludeList).forEach(btn =>
+                btn.addEventListener('click', () => page.excludeTransaction(btn.dataset)));
         }
     },
     configureMonths: () => {
@@ -87,5 +93,26 @@ export const page = {
         const page = parameters.get('page');
         const size = parameters.get('size');
         return { year, month, page, size };
+    },
+    excludeTransaction: ({ id, index }) => {
+        confirmAlert(
+            "Deseja realmente excluir essa transação?",
+            "Esta transação não pode ser desfeita!",
+            async () => {
+                var { isSuccess, data, errors } = await updateTransaction({ id, status: 'EXCLUDED' });
+                if (isSuccess) {
+                    page.removeTableRow(index);
+                    console.log('data', data);
+                    successAlert('transação atualizada com sucesso');
+                }
+                else {
+                    console.log('errors', errors);
+                    errorAlert('Ocorreram erros ao tentar atualizar uma transação');
+                }
+            });
+    },
+    removeTableRow: (index) => {
+        const tbody = page.table.getElementsByTagName('tbody')[0];
+        tbody.deleteRow(index);
     }
 }
