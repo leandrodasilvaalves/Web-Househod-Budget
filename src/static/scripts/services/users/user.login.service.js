@@ -14,12 +14,13 @@ export default function (destinationRoute) {
             if (isSuccess) {
                 const { token_type, access_token } = data;
                 storage.setItem(storageKey, `${token_type} ${access_token}`);
-                window.location.href = destinationRoute;
+                const redirectRoute = new URLSearchParams(window.location.search).get('redirect');
+                window.location.href = redirectRoute ? redirectRoute : destinationRoute;
             }
         });
     }
     if (page.isLogout()) {
-        clearAccessToken();
+        clearAccessToken(true);
     }
 }
 
@@ -39,10 +40,12 @@ const page = {
 
 const accessToken = storage.getItem(storageKey);
 
-const clearAccessToken = () => {
+const clearAccessToken = (isLogout) => {
     storage.removetItem(storageKey);
     if (page.isLogin() == false) {
-        window.location.href = '/account/login';
+        const loginRoute = '/account/login';
+        window.location.href = isLogout ? loginRoute :
+            `${loginRoute}?redirect=${window.location.pathname}`;
     }
 }
 
