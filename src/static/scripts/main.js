@@ -8,6 +8,9 @@ import '../css/style.css'
 // services
 import users, { isAuthenticated } from './services/users';
 import transactions from './services/transactions';
+import monthlybudget from './services/monthlybudget';
+
+//partials
 import footer from './partials/footer.partial.js';
 
 //mock: development
@@ -18,5 +21,6 @@ footer();
 if (isAuthenticated()) {
     users();
     transactions();
+    monthlybudget();
     mockForms();
 }
