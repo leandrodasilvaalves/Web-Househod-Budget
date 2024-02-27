@@ -38,7 +38,7 @@ export const page = {
         if (isSuccess) {
             const tbody = page.table.getElementsByTagName("tbody")[0];
             const result = data.items.map((item, index) =>
-                `<tr>
+                `<tr class="align-middle">
                     <td>${new Date(item.transactionDate).getUTCDate()}</td>
                     <td>${item.description}</td>
                     <td>
