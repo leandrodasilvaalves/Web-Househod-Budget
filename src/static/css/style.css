@@ -16,3 +16,7 @@
 #darkTheme{
     margin-right: 0.5rem;
 }
+
+#monthlybudget th {
+    width: 14vw;
+}

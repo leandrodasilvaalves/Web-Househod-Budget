@@ -7,20 +7,15 @@
 
 <body>
     <%- include('../partials/navbar') %>
-        <div class="container">
-            <main role="main" class="pb-3 mb-5">
-                <div>
-                    <div class="row g-5">
-                        <div class="col-md-7 col-lg-8">
-                            <h4 class="mb-3">Orçamento Mensal</small></h4>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
+    <div class="container-fluid">
+        <main role="main" class="pb-3 mb-5">
+            <h4 class="mb-3">Orçamento Mensal</small></h4>
+            <div class="accordion" id="monthlybudget"></div>
+        </main>
+    </div>
 
-        <%- include('../partials/footer') %>
-            <%- include('../partials/scripts') %>
+    <%- include('../partials/footer') %>
+    <%- include('../partials/scripts') %>
 </body>
 
 </html>
