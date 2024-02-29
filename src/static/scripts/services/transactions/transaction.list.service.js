@@ -2,13 +2,16 @@ import { getAllTransactions, updateTransaction } from '@clients/transaction.clie
 import pagination from '@partials/pagination.partial';
 import { padZeroLeft } from '@utils/number.utils';
 import { successAlert, errorAlert, confirmAlert } from '@utils/alerts.utils';
+import { configureMonthOptions, configureYearOptions } from '@utils/date.utils';
 
 export default function () {
     document.addEventListener("DOMContentLoaded", async () => {
         if (page.isTransactionsList()) {
             page.loadTransactions();
-            page.configureMonths();
-            page.configureYear();
+
+            const { year, month } = page.getQueryString();
+            configureMonthOptions(page.month, month);
+            configureYearOptions(page.year, year);
 
             page.form.addEventListener('submit', event => {
                 event.preventDefault();
@@ -62,28 +65,7 @@ export const page = {
             Array.from(page.btnExcludeList).forEach(btn =>
                 btn.addEventListener('click', () => page.excludeTransaction(btn.dataset)));
         }
-    },
-    configureMonths: () => {
-        const nameOfMonths = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-        const { month: current } = page.getQueryString();
-        nameOfMonths.forEach((month, index) => {
-            let option = document.createElement('option');
-            option.value = padZeroLeft(index + 1, 2);
-            option.text = month;
-            option.selected = current == padZeroLeft(index + 1, 2);
-            page.month.appendChild(option);
-        });
-    },
-    configureYear: () => {
-        const { year: current } = page.getQueryString();
-        for (let year = 2015; year <= 2045; year++) {
-            let option = document.createElement('option');
-            option.value = year;
-            option.text = year;
-            option.selected = year == current;
-            page.year.appendChild(option);
-        }
-    },
+    },   
     getQueryString: () => {
         const queryString = window.location.search;
         const parameters = new URLSearchParams(queryString);

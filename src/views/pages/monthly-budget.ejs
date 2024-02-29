@@ -10,6 +10,23 @@
     <div class="container-fluid">
         <main role="main" class="pb-3 mb-5">
             <h4 class="mb-3">Orçamento Mensal</small></h4>
+            <div class="d-flex flex-row justify-content-between mb-2">
+                <div class="flex-fill">
+                    <form id="search" novalidate>
+                        <div class="row">
+                            <div class="col-2">
+                                <select class="form-select" id="month"></select>
+                            </div>
+                            <div class="col-1">
+                                <select class="form-select" id="year"></select>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-outline-info" type="submit">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="accordion" id="monthlybudget"></div>
         </main>
     </div>

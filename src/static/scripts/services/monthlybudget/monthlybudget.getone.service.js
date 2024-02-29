@@ -1,22 +1,37 @@
 import { getOneMonthlyBudget } from '@clients/monthlybudget.client';
+import { configureYearOptions, configureMonthOptions, getMonthName } from '@utils/date.utils';
+import { warningAlert } from '@utils/alerts.utils';
 
 export default async () => {
     if (page.isMonthlyBudget()) {
-        const { data, isSuccess } = await getOneMonthlyBudget(2024, "FEBRUARY");
-        if (isSuccess) {
-            page.bindCategories(data)
-        }
+        const today = new Date();
+        configureYearOptions(page.year, new Date().getFullYear());
+        configureMonthOptions(page.month, today.getMonth() + 1);
+
+        const month = getMonthName(today.getMonth() + 1).key.toUpperCase()
+        await page.bindCategories(today.getFullYear(), month);
+
+        page.form.addEventListener('submit', async event => {
+            event.preventDefault();
+            const { name: monthName } = page.month.selectedOptions[0].dataset;
+            await page.bindCategories(page.year?.value, monthName);
+        });
     }
 };
 
 const page = {
     accordion: document.getElementById('monthlybudget'),
+    year: document.getElementById('year'),
+    month: document.getElementById('month'),
+    form: document.getElementById('search'),
     isMonthlyBudget: () => window.location.pathname == '/monthlybudget',
 
-    bindCategories: ({categories}) => {
-        page.accordion.innerHTML = categories.map(category => {
-            const accordionId = `acc-${category.id}`;
-            return `
+    bindCategories: async (year, month) => {
+        const { data, isSuccess } = await getOneMonthlyBudget(year, month);
+        if (isSuccess) {
+            page.accordion.innerHTML = data.categories.map(category => {
+                const accordionId = `acc-${category.id}`;
+                return `
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" 
@@ -35,9 +50,12 @@ const page = {
                         </div>               
                     </div>
                 </div>`}).join('');
+        } else {
+            warningAlert('Orçamento não encontrado!');
+        }
     },
     bindSubcategories: subcategories => {
-        const result = subcategories.map(subcategory => 
+        const result = subcategories.map(subcategory =>
             `<tr>
                 <th scope="row" data-subcategory=${subcategory.id}">${subcategory.name}</th>
                 <td>
