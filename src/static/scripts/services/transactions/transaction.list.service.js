@@ -10,8 +10,8 @@ export default function () {
             page.loadTransactions();
 
             const { year, month } = page.getQueryString();
-            configureMonthOptions(page.month, month);
             configureYearOptions(page.year, year);
+            configureMonthOptions(page.month, parseInt(month));
 
             page.form.addEventListener('submit', event => {
                 event.preventDefault();
@@ -66,7 +66,7 @@ export const page = {
             Array.from(page.btnExcludeList).forEach(btn =>
                 btn.addEventListener('click', () => page.excludeTransaction(btn.dataset)));
         }
-    },   
+    },
     getQueryString: () => {
         const queryString = window.location.search;
         const parameters = new URLSearchParams(queryString);
