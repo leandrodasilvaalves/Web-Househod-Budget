@@ -15,17 +15,16 @@ const configureMonthOptions = (element, currentMonth) => {
     for (var index = 1; index <= 12; index++) {
         let option = document.createElement('option');
         option.value = padZeroLeft(index);
-        const monthName = getMonthName(index);
-        option.text = monthName.value;
-        option.dataset.name = monthName.key.toUpperCase();
+        const { key, value } = getMonthName(index);
+        option.text = value;
+        option.dataset.name = key.toUpperCase();
         option.selected = currentMonth == padZeroLeft(index);
         element.appendChild(option);
     }
 };
 
-
 const getMonthName = (index) => {
-    const monthMapping = {
+    const mapping = {
         1: ['January', 'Janeiro'],
         2: ['February', 'Fevereiro'],
         3: ['March', 'Março'],
@@ -40,8 +39,8 @@ const getMonthName = (index) => {
         12: ['December', 'Dezembro']
     };
     return {
-        key: monthMapping[index][0],
-        value: monthMapping[index][1]
+        key: mapping[index][0],
+        value: mapping[index][1]
     };
 }
 

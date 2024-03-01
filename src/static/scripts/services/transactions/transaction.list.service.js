@@ -55,6 +55,7 @@ export const page = {
                     <td>
                         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">   
                             <a href="/transactions/edit/${item.id}" class="btn btn-outline-info" tabindex="-1" role="button"><i class="bi bi-pencil-square"></i></a>
+                            <a href="/transactions/clone/${item.id}" class="btn btn-outline-secondary" tabindex="-1" role="button"><i class="bi bi-copy"></i></a>
                             <button name="btn-exclude" data-id="${item.id}" data-index="${index}" class="btn btn-outline-danger" tabindex="-1" role="button"><i class="bi bi-trash"></i></button>
                         </div>
                     </td>

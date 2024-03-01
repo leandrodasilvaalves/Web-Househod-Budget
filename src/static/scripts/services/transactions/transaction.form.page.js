@@ -123,5 +123,9 @@ const loadPayment = payment => {
         page.creditCardName.value = creditCard.name;
         page.installmentsNumber.value = creditCard.installment.number;
         page.firstDueDate.value = parseDate(creditCard.installment.nextPayments[0].dueDate);
+        page.showCreditCardForm();
+    }
+    else {
+        page.hideCreditCardForm();
     }
 };
