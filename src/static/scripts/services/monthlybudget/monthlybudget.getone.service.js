@@ -42,7 +42,24 @@ const page = {
                     </h2>
                     <div id="${accordionId}" class="accordion-collapse collapse show">
                         <div class="container-fluid">
-                            <table class="table table-hover table-striped table-sm">               
+                            <table class="table table-hover table-striped table-sm">  
+                                <thead>
+                                    <td><small>Subcategoria</small></td>
+                                    <td>
+                                        <div class="container text-center">
+                                            <div class="row g-2">
+                                                <div class="col-6 d-flex flex-column">
+                                                    <small>Planejado</small>
+                                                    <small>${category.total.planned?.toFixed(2)}</small>
+                                                </div>
+                                                <div class="col-6 d-flex flex-column">
+                                                    <strong><small>Real</small></strong>
+                                                    <strong><small>${category.total.actual?.toFixed(2)}</small></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </thead>             
                                 <tbody>
                                     ${page.bindSubcategories(category.subcategories)}
                                 </tbody>
