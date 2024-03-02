@@ -16,6 +16,15 @@ export default async () => {
             const { name: monthName } = page.month.selectedOptions[0].dataset;
             await page.bindCategories(page.year?.value, monthName);
         });
+        
+        page.btnCollapse.addEventListener('click', event => {
+            const { dataset } = event.target;
+            const isClosed = dataset.openned == "false" ? false : true;
+            const toggleAction = isClosed ? page.closeAllAccordions : page.openAllAccordions;
+            page.btnCollapse.textContent = isClosed ? 'Abrir todos' : 'Fechar todos';
+            dataset.openned = !isClosed;
+            toggleAction();
+        });
     }
 };
 
@@ -24,8 +33,26 @@ const page = {
     year: document.getElementById('year'),
     month: document.getElementById('month'),
     form: document.getElementById('search'),
+    btnCollapse: document.getElementById('btn-collapse'),
     isMonthlyBudget: () => window.location.pathname == '/monthlybudget',
-
+    openAllAccordions: () => {
+        document.querySelectorAll('.accordion-item').forEach(item => {
+            const button = item.querySelector('.accordion-button');
+            button.classList.contains('collapsed') && button.click();
+        });
+    },
+    closeAllAccordions: () => {
+        document.querySelectorAll('.accordion-item').forEach(item => {
+            const button = item.querySelector('.accordion-button');
+            button.classList.contains('collapsed') == false && button.click();
+        });
+    },
+    closeAllAccordions: () => {
+        document.querySelectorAll('.accordion-item').forEach(item => {
+            const button = item.querySelector('.accordion-button');
+            button.classList.contains('collapsed') == false && button.click();
+        });
+    },
     bindCategories: async (year, month) => {
         const { data, isSuccess } = await getOneMonthlyBudget(year, month);
         if (isSuccess) {
