@@ -1,0 +1,22 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    background-color: var(--bs-body-bg);
+}
+
+.footer .form-switch{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#darkTheme{
+    margin-right: 0.5rem;
+}
+
+#monthlybudget th {
+    width: 14vw;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="<%= theme %>">
+
+<head>
+    <%- include('../partials/header') %>
+</head>
+
+<body>
+    <%- include('../partials/navbar') %>
+        <div class="container">
+            <main role="main" class="pb-3 my-5">
+                <div id="content">
+                    <div>
+                        <div class="row g-5">
+                            <div class="col-md-6 col-lg-4">
+                                <h4 class="mb-3">Novo usuário</h4>
+                                <form id="registerUserForm" class="needs-validation" novalidate>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="fullName" class="form-label">Nome completo</label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" class="form-control" id="fullName"
+                                                    placeholder="usuário" value="" required>
+                                                <div class="invalid-feedback">
+                                                    O nome completo é um campo obrigatório
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="email" class="form-label">E-mail</label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" class="form-control" id="email"
+                                                    placeholder="usuário" value="" required>
+                                                <div class="invalid-feedback">
+                                                    Informe um e-mail válido
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="username" class="form-label">Usuário</label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" class="form-control" id="username"
+                                                    placeholder="usuário" value="" required>
+                                                <div class="invalid-feedback">
+                                                    O usuário é um campo obrigatório
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="password" class="form-label">Senha</label>
+                                            <div class="input-group has-validation">
+                                                <input type="password" class="form-control" id="password"
+                                                    placeholder="senha" value="" required>
+                                                <div class="invalid-feedback">
+                                                    A senha é um campo obrigatório
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="confirmPassword" class="form-label">Confirme a senha</label>
+                                            <div class="input-group has-validation">
+                                                <input type="password" class="form-control" id="confirmPassword"
+                                                    placeholder="senha" value="" required>
+                                                <div class="invalid-feedback">
+                                                    As senhas devem ser iguais
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Registrar</button>
+                                </form>
+                            </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <%- include('../partials/footer') %>
+        <%- include('../partials/scripts') %>
+</body>
+
+</html>

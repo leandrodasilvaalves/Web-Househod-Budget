@@ -1,0 +1,70 @@
+version: "3.4"
+
+services:    
+  api:    
+    container_name: api.household.buget
+    image: leandroalves86/household.budget:1.0.7-beta.3
+    ports:
+      - 5215:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNET_ENV}
+      - ASPNETCORE_URLS=http://+:80
+      - Seed__Categories__Enabled=true
+    depends_on:
+      mongo:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/hc/live"]
+      interval: 10s
+      timeout: 15s
+      retries: 3
+      start_period: 2s
+    cpus: 0.25
+    mem_limit: 120M
+
+  mongo:
+    image: mongo
+    container_name: ${PREFIX_CONTAINERS}.mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
+    cpus: 0.5
+    mem_limit: 256M
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  mongo-ui:
+    container_name:  ${PREFIX_CONTAINERS}.mongo-ui
+    image: ugleiton/mongo-gui
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: always
+    ports:
+      - "4321:4321"
+    environment:
+      - MONGO_URL=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017
+    cpus: 0.25
+    mem_limit: 256M
+      
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: ${PREFIX_CONTAINERS}.rabbit
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      retries: 3
+      start_period: 5s
+    cpus: 0.5
+    mem_limit: 256M

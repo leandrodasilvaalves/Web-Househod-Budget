@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="<%= theme %>">
+
+<head>
+    <%- include('../partials/header') %>
+</head>
+
+<body>
+    <%- include('../partials/navbar') %>
+        <div class="container">
+            <main role="main" class="pb-3 my-5">
+                <div id="content">
+                    <div>
+                        <div class="row g-5">
+                            <div class="col-md-6 col-lg-4">
+                                <h4 class="mb-3">Acesso o sistema</h4>
+                                <form id="loginform" class="needs-validation" novalidate>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="username" class="form-label">Usuário</label>
+                                            <div class="input-group has-validation">
+                                                <input type="text" class="form-control" id="username"
+                                                    placeholder="usuário" value="" required>
+                                                <div class="invalid-feedback">
+                                                    O usuário é um campo obrigatório
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="password" class="form-label">Senha</label>
+                                            <div class="input-group has-validation">
+                                                <input type="password" class="form-control" id="password"
+                                                    placeholder="senha" value="" required>
+                                                <div class="invalid-feedback">
+                                                    A senha é um campo obrigatório
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="w-100 btn btn-primary btn-lg mt-3" type="submit">Entrar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <%- include('../partials/footer') %>
+        <%- include('../partials/scripts') %>
+</body>
+
+</html>

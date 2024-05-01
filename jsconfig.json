@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@utils/*": ["src/static/scripts/utils/*"],
+        "@clients/*": ["src/static/scripts/clients/*"],
+        "@partials/*": ["src/static/scripts/partials/*"],
+        "@services/*": ["src/static/scripts/services/*"]
+      }
+    }
+  }
+  
